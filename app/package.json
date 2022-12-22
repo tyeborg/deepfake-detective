@@ -1,0 +1,15 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "Deepfake Detective",
+  "main": "./js/index.js",
+  "scripts": {
+    "start": "node ./js/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tyler Supersad",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
