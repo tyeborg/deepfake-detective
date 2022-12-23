@@ -9,6 +9,6 @@ Project Outline: Deepfakes have become an increasing concern. Particularly with 
 
 <p float="left">
   <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=js,python,flask,html,css,php,vscode" />
+    <img src="https://skillicons.dev/icons?i=js,python,flask,html,css,php,git,vscode" />
   </a>
 </p>
