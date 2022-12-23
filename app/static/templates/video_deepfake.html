@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Welcome!</title>
+        <!-- Reference our Stylesheet for all the cool styles utilized -->
+        <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+        <!-- Reference our CSS -->
+        <link href="{{url_for('static',filename='styles/file_uploader_style.css')}}" rel = "stylesheet" type="text/css">
+        <!-- Enable access to cool icons provided by Font Awesome -->
+        <link rel="stylesheet" 
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" 
+            integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" 
+            crossorigin="anonymous" 
+            referrerpolicy="no-referrer" 
+        />
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <header>File Uploader Javascript</header>
+            <form action="#">
+                <input type="file" class="file-input" name="file" hidden>
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Browse File to Upload</p>
+            </form>
+            <section class="error-area"></section>
+            <section class="progress-area"></section>
+            <section class="uploaded-area"></section>
+        </div>
+        <script src="{{url_for('static',filename='scripts/file_uploader_script.js')}}"></script>
+    </body>
+</html>

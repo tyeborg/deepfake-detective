@@ -1,0 +1,167 @@
+/* Import Google font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Set the browser default */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #a5b8e9;
+}
+
+.wrapper {
+    width: 430px;
+    padding: 30px;
+    background: #fff;
+    border-radius: 5px;
+}
+
+.wrapper header {
+    color: #3574bd;
+    font-size: 27px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.wrapper form {
+    height: 167px;
+    display: flex;
+    margin: 30px 0;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 5px;
+    border: 2px dashed #6990f2;
+    cursor: pointer;
+}
+
+/* Set i and p the same color */
+form :where(i, p) {
+    color: #6990f2;
+}
+
+form i {
+    font-size: 50px;
+}
+
+form p {
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+section .row {
+    background: #e9f0ff;
+    margin-bottom: 10px;
+    list-style: none;
+    padding: 15px 20px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+section .row i {
+    font-size: 30px;
+    color: #6990f2;
+}
+
+section .details span {
+    font-size: 14px;
+}
+
+.progress-area .row .content {
+    width: 100%;
+    margin-left: 15px;
+}
+
+.progress-area .details {
+    display: flex;
+    align-items: center;
+    margin-bottom: 7px;
+    justify-content: space-between;
+}
+
+.progress-area .progress-bar {
+    height: 6px;
+    width: 100%;
+    background-color: #fff;
+    margin-bottom: 4px;
+    border-radius: 30px;
+}
+
+.progress-bar .progress {
+    height: 6px;
+    /* width: 90%; */
+    background-color: #6990f2;
+    border-radius: inherit;
+} 
+
+.uploaded-area {
+    max-height: 230px;
+    overflow-y: scroll;
+}
+
+.uploaded-area.onprogress {
+    max-height: 150px;
+}
+
+.uploaded-area .row .content {
+    display: flex;
+    align-items: center;
+}
+
+.uploaded-area .row .details {
+    display: flex;
+    margin-left: 15px;
+    flex-direction: column;
+}
+
+.uploaded-area .details .size {
+    font-size: 11px;
+    color: #404040;
+}
+
+.uploaded-area .fa-check {
+    color: #6990f2;
+    font-size: 16px;
+}
+
+.error-area .row .content {
+    display: flex;
+    align-items: center;
+}
+
+.error-area .row .details {
+    display: flex;
+    margin-left: 15px;
+    flex-direction: column;
+    color: #af4242;
+}
+
+.error-area .fa-circle-exclamation {
+    color: #af4242;
+    font-size: 16px;
+}
+
+.error-area .fa-file-circle-xmark {
+    color: #af4242;
+}
+
+.error-area .row {
+    background: #fde8ec;
+    margin-bottom: 10px;
+    list-style: none;
+    padding: 15px 20px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
