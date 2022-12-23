@@ -67,7 +67,7 @@ function uploadFile(name) {
     let xhr = new XMLHttpRequest();
 
     // Send post request to the specified URL/File
-    xhr.open("POST", "./php/upload.php");
+    xhr.open("POST", "{{url_for('static',filename='php/upload.php')}}");
     
     xhr.upload.addEventListener("progress", ({loaded, total}) => {
         // Get percentage of loaded file size

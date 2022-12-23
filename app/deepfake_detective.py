@@ -15,7 +15,7 @@ import os
 from moviepy.editor import VideoFileClip
 
 # Create a class that collects all frames from input video.
-class DeepfakeDetector():
+class DeepfakeDetective():
     def __init__(self, input_video):
         self.video_file = input_video
         self.video_duration = self.get_video_duration()[0]
