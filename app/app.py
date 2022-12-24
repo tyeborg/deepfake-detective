@@ -21,11 +21,11 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def handle_files_folder():
-    files_dir = '/static/files'
+    files_dir = 'static/files'
 
     # Create files folder in case it does not already exist.
     if not os.path.exists(files_dir):
-        os.makedirs(files_dir)
+        os.mkdir(files_dir)
 
     # Clear the files folder.
     for f in os.listdir(files_dir):
@@ -46,10 +46,11 @@ def create_app():
     @app.route('/upload', methods=['GET', 'POST'])
     def main():
         if request.method == 'POST':
-            # Handle 'files' Folder in 'static' folder.
-            handle_files_folder()
             # Grab the file from the input field.
             f = request.files['file']
+
+            # Handle 'files' Folder in 'static' folder.
+            handle_files_folder()
 
             # Determine if file exists and contains a valid extension.
             if f and allowed_file(f.filename):
