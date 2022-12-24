@@ -36,14 +36,14 @@ function validateFile(file) {
     // Initialize a variable defining the file type of the uploaded file.
     let fileType = file.type;
     // Initialize a list of all the valid file extensions
-    let validExtensions = ['video/mp4', 'video/mov'];
+    let validExtensions = ['video/mp4', 'video/mov', 'image/jpeg', 'image/jpg', 'image/png'];
     // Initialize a variable that will showcase the filename.
     let fileName = getFilename(file);
 
     // Determine if the uploaded file includes the mp4 or mov extension.
     if(validExtensions.includes(fileType)){
         // Calling uploadFile with passing file name as an argument
-        uploadFile(fileName);
+        uploadFile(file.name);
     }else {
         let errorHTML = `<li class="row">
                             <div class="content">
@@ -64,9 +64,14 @@ function validateFile(file) {
 
 function uploadFile(name) {
     // Create new xml obj (AJAX)
-    let xhr = new XMLHttpRequest();
-    // FormData is an object to easily send form data
-    let data = new FormData();
+    let xhr = new XMLHttpRequest(); 
+    var url = 'upload.php'; 
+
+    // Send post request to the specified URL/File
+    xhr.open("POST", url, true);
+
+    //Send the proper header information along with the request
+    //xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     
     xhr.upload.addEventListener("progress", ({loaded, total}) => {
         // Get percentage of loaded file size
@@ -117,8 +122,9 @@ function uploadFile(name) {
             //uploadedArea.insertAdjacentHTML("afterbegin", uploadedHTML);
         }
     });
-    // Send post request to the specified URL/File
-    xhr.open("POST", "../templates/upload.php", true);
+    // FormData is an object to easily send form data
+    let data = new FormData(form);
+    //data.append("file", name);
     // Sending form data to php
     xhr.send(data);
 }

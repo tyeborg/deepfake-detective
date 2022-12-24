@@ -1,30 +1,76 @@
+# pip install flask
+# pip install flask_wtf
+# pip install wtforms
+
+# Import the appropriate libraries for future use.
 from flask import Flask, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
-from deepfake_detective import DeepfakeDetective
+from flask_wtf import FlaskForm
+from wtforms import FileField
 import os
 import dlib
 
-app = Flask(__name__ , template_folder='static/templates')
-@app.route('/')
-def main():
-  return render_template ("video_deepfake.html")
+# Import the DeepfakeDetective class.
+from deepfake_detective import DeepfakeDetective
 
-# Upload File 
-UPLOAD_FOLDER = 'static'
-app.secret_key = "secret key"
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+# Establish the valid file extension types for users to upload.
+ALLOWED_EXTENSIONS = set(['mp4', 'mov', 'jpeg', 'jpg', 'png'])
 
-@app.route('/predict_video', methods=['POST'])
-def upload_video():
-	f = request.files['file']
-	filename = secure_filename(f.filename)
-	f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-	filepath = "static/" + filename
+# Construct a method to determine if an uploaded file has a valid extension.
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-    deepfake_detective = DeepfakeDetective(filepath)
-    video_fps = deepfake_detective.fps
-    print(f'Video FPS: {video_fps}')
+def handle_files_folder():
+    files_dir = '/static/files'
 
-if __name__ =='__main__': 
-  app.run(port=3000, debug=True)
+    # Create files folder in case it does not already exist.
+    if not os.path.exists(files_dir):
+        os.makedirs(files_dir)
+
+    # Clear the files folder.
+    for f in os.listdir(files_dir):
+        os.remove(os.path.join(files_dir, f))
+
+def create_app():
+    # Create an app instance.
+    app = Flask(__name__ , template_folder='templates')
+
+    # Upload File 
+    app.secret_key = "secretkey"
+    # Configure upload folder where all the files will be uploaded into.
+    app.config['UPLOAD_FOLDER'] = 'static/files'
+    app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
+    # Create a Home route.
+    @app.route('/', methods=['GET', 'POST'])
+    @app.route('/upload', methods=['GET', 'POST'])
+    def main():
+        if request.method == 'POST':
+            # Handle 'files' Folder in 'static' folder.
+            handle_files_folder()
+            # Grab the file from the input field.
+            f = request.files['file']
+
+            # Determine if file exists and contains a valid extension.
+            if f and allowed_file(f.filename):
+                # Convert filename to a secured filename (removes slashes from filename).
+                filename = secure_filename(f.filename)
+                # Save the file object in the static/files location.
+                f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+                # Initialize a filepath for the stored input videofile.
+                filepath = "static/files/" + filename
+
+                # Execute DeepfakeDetective with the given videofile.
+                deepfake_detective = DeepfakeDetective(filepath)
+                video_fps = f'{filename} FPS: {deepfake_detective.fps}'
+                return video_fps
+
+        # Return the content of 'video_deepfake.html' onto the home webpage.
+        return render_template ("index.html")
+
+    return app
+
+if __name__ =='__main__':
+    app = create_app()
+    app.run(port=3000, debug=True)

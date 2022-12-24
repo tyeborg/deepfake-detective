@@ -22,8 +22,8 @@
     <body>
         <div class="wrapper">
             <header>File Uploader Javascript</header>
-            <form action="/predict_video" method="post" enctype="multipart/form-data">
-                <input type="file" class="file-input" name="file" hidden>
+            <form action="#" method="POST" enctype="multipart/form-data" id="formElem">
+                <input type="file" class="file-input" name="file" autocomplete="off" required hidden>
                 <i class="fas fa-cloud-upload-alt"></i>
                 <p>Browse File to Upload</p>
             </form>
@@ -31,6 +31,6 @@
             <section class="progress-area"></section>
             <section class="uploaded-area"></section>
         </div>
-        <script src="{{url_for('static',filename='scripts/file_uploader_script.js')}}"></script>
+        <script src="{{url_for('static',filename='app.js')}}"></script>
     </body>
 </html>
