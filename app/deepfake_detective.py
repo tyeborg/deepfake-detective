@@ -18,8 +18,8 @@ from moviepy.editor import VideoFileClip
 class DeepfakeDetective():
     def __init__(self, input_video):
         self.video_file = input_video
-        self.video_duration = self.get_video_duration()[0]
-        self.fps = self.get_video_duration()[1]
+        self.video_duration = self.get_video_length()[0]
+        self.fps = self.get_video_length()[1]
 
         self.frames = self.extract_frames()
         self.detector = MTCNN()
@@ -77,33 +77,44 @@ class DeepfakeDetective():
         # Return the maximum number of discernable faces in the video.
         return max_faces
 
-    def get_video_duration(self):
+    def get_video_length(self):
         clip = VideoFileClip(self.video_file)
+        # Obtain the duration of the clip (in seconds).
         duration = clip.duration
+        # Obtain the fps of the video clip.
         fps = round(clip.fps)
     
         return duration, fps
 
     # We need to ensure the video contains one person and is less than 2mins.
     def validate_video(self):
+        # Initialize a dictionary with success and error as keys.
+        validity_dict = {'success': None, 'error': None}
+
         # Initialize variables that will determine the validity of the video.
-        success = 0
         error = 0
+        # Initialize a message variable and a list to store those messages.
+        msg, msg_lst = '', []
 
         # Determine if there is more than one discernable face in video.
         if self.num_faces_in_video > 1:
             error += 1
-
+            msg = f'{self.video_file} contains too many faces'
+            msg_lst.append(msg)
         # Determine if the video surpasses the 2 minute mark (120 seconds).
         if self.video_duration > 120:
             error += 1
+            msg = f'{self.video_file} is too long to be processed'
+            msg_lst.append(msg)
 
         # Determine if any errors have applied towards the video.
         if error > 0:
             # If yes... the video cannot be submitted for deepfake prediction.
-            success = 0
+            validity_dict['error'] = msg_lst
         else:
             # Else, the video has no errors & can be submitted for deepfake prediciton.
-            success += 1
+            msg = f'{self.video_file} successfully uploaded'
+            msg_lst.append(msg)
+            validity_dict['success'] = msg_lst
 
-        # Return something...
+        return validity_dict
