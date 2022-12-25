@@ -12,7 +12,7 @@ cd app
 
 Enter the following to run the program:
 ```bash
-python -u main.py
+python -u app.py
 ```
 
 ## Deepfake Detective Concept
