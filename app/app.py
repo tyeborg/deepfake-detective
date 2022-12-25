@@ -12,6 +12,7 @@ import dlib
 
 # Import the DeepfakeDetective class.
 from deepfake_detective import DeepfakeDetective
+from config import Config, ProductionConfig, DevelopmentConfig, TestingConfig
 
 # Establish the valid file extension types for users to upload.
 ALLOWED_EXTENSIONS = set(['mp4', 'mov', 'jpeg', 'jpg', 'png'])
@@ -35,11 +36,14 @@ def create_app():
     # Create an app instance.
     app = Flask(__name__ , template_folder='templates')
 
-    # Upload File 
-    app.secret_key = "secretkey"
-    # Configure upload folder where all the files will be uploaded into.
-    app.config['UPLOAD_FOLDER'] = 'static/files'
-    app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+    # Attach our configurations to the app object.
+    # Dynamically change type of configurations depending on the FLASK ENV.
+    if app.config["ENV"] == "production":
+        app.config.from_object("config.ProductionConfig")
+    elif app.config["ENV"] == "testing":
+        app.config.from_object("config.TestingConfig")
+    else:
+        app.config.from_object("config.DevelopmentConfig")
 
     # Create a Home route.
     @app.route('/', methods=['GET', 'POST'])
@@ -60,7 +64,7 @@ def create_app():
                 f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
                 # Initialize a filepath for the stored input videofile.
-                filepath = "static/files/" + filename
+                filepath = app.config['UPLOAD_FOLDER'] + "/" + filename
 
                 # Execute DeepfakeDetective with the given videofile.
                 deepfake_detective = DeepfakeDetective(filepath)
