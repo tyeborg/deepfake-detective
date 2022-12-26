@@ -1,6 +1,7 @@
 # pip install flask
 # pip install flask_wtf
 # pip install wtforms
+# # pip install python-magic-bin==0.4.14
 
 # Import the appropriate libraries for future use.
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
@@ -9,6 +10,7 @@ from flask_wtf import FlaskForm
 from wtforms import FileField
 import os
 import dlib
+import magic
 
 # Import the DeepfakeDetective class.
 from deepfake_detective import DeepfakeDetective
@@ -31,6 +33,15 @@ def handle_files_folder():
     # Clear the files folder.
     for f in os.listdir(files_dir):
         os.remove(os.path.join(files_dir, f))
+
+# Create a method that will determine if the file type of the input file.
+def get_filetype(filename):
+    # Identify the file type by checking input file header.
+    file_type = magic.from_file(filename, mime=True)
+    # Split the string from the index where a slash is located.
+    file_type = file_type.split("/")
+    # Return the first item within the list (file type).
+    return file_type[0]
 
 def create_app():
     # Create an app instance.
