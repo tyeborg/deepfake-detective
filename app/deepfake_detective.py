@@ -26,7 +26,7 @@ class DeepfakeDetective():
         self.model = tf.keras.models.load_model("effnet")
         # Receive file type of input file.
         self.file_type = self.get_file_type()
-        
+
         # Children classes will determine the value of 'num_faces'.
         self.num_faces = None
 
@@ -155,7 +155,7 @@ class VideoInput(DeepfakeDetective):
     # Create a method that extracts frames from the input video.
     def extract_frames(self):
         # Capture the input video.
-        cap = cv.VideoCapture(self.video_file)
+        cap = cv.VideoCapture(self.video)
 
         frames = []
         count = 0
