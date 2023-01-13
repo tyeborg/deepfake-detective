@@ -13,7 +13,7 @@ import dlib
 import magic
 
 # Import the DeepfakeDetective class.
-from deepfake_detective import DeepfakeDetective
+from deepfake_detective import DeepfakeDetective, ImageInput, VideoInput
 from config import Config, ProductionConfig, DevelopmentConfig, TestingConfig
 
 # Establish the valid file extension types for users to upload.
@@ -79,8 +79,32 @@ def create_app():
 
                 # Execute DeepfakeDetective with the given videofile.
                 deepfake_detective = DeepfakeDetective(filepath)
-                video_fps = f'{filename} FPS: {deepfake_detective.fps}'
-                return video_fps
+
+                file_type = deepfake_detective.get_file_type()
+
+                if file_type == "image":
+                    print("Dealing with IMAGE input")
+                    deepfake_detective = ImageInput(filepath)
+                elif file_type == "video":
+                    print("Dealing with VIDEO input")
+                    deepfake_detective = VideoInput(filepath)
+                else:
+                    deepfake_detective = None
+
+                if deepfake_detective != None:
+                    is_valid = deepfake_detective.validate()
+
+                    if is_valid == "success":
+                        real, deepfake = deepfake_detective.predict()
+                        real, deepfake = round(round(real, 2) * 100), round(round(deepfake, 2) * 100)
+                        print(f'[*] REAL: {real}%')
+                        print(f'[*] DEEPFAKE: {deepfake}%')
+                        return(f'REAL: {real}% | DEEPFAKE: {deepfake}%')
+                    else:
+                        error_msg = deepfake_detective.validate()[1]
+                        return(f'{error_msg}')
+                        #for msg in error_msg:
+                            #print(f'[*] {msg}')
 
         # Return the content of 'video_deepfake.html' onto the home webpage.
         return render_template ("index.html")
