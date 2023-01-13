@@ -1,7 +1,8 @@
 # pip install flask
 # pip install flask_wtf
 # pip install wtforms
-# # pip install python-magic-bin==0.4.14
+# pip install python-magic-bin==0.4.14
+# pip install -U pylint --user
 
 # Import the appropriate libraries for future use.
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
