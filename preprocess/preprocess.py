@@ -1,4 +1,3 @@
-import os
 import ast
 import random
 import string
@@ -7,6 +6,11 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 from mtcnn.mtcnn import MTCNN
+
+import sys
+import os
+SCRIPT_DIR = os.path.dirname(os.path.abspath('../app/processor.py'))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
 from app.processor import Processor
 
 class Preprocess(Processor):
