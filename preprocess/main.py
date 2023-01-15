@@ -57,7 +57,7 @@ def main():
     x_val, y_val = preprocess.get_segment_sets(val_set)
     x_test, y_test = preprocess.get_segment_sets(test_set)
 
-    effnet = DeepfakeDetectiveModel(x_train, y_train, x_val, y_val, x_test, y_test)
+    effnet = DeepfakeDetectiveModel(x_train, y_train, x_val, y_val)
     effnet.model.save('effnet.h5')
 
 if __name__ =='__main__':

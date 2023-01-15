@@ -1,29 +1,37 @@
-import os 
-import cv2 as cv
-import numpy as np
-import tensorflow as tf
-import tensorflow.keras
-from tensorflow.keras import Sequential
-from tensorflow.keras import layers
-from tensorflow.keras.layers import Dense, Conv2D, MaxPooling2D, Dropout, Flatten, MaxPool2D
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.layers import Activation, Convolution2D, Dropout, Conv2D,AveragePooling2D, BatchNormalization,Flatten,GlobalAveragePooling2D
-from tensorflow.keras import preprocessing
-from sklearn.utils import shuffle  
-import pandas as pd
-import matplotlib.pyplot as plt
-
 # pip install -U efficientnet
 # pip install tensorflow --upgrade
+# pip install tensorflow==2.9.1
+
+import numpy as np 
+import pandas as pd
+import cv2
+import numpy as np
+
+# pip install efficientnet
+import efficientnet.keras as efn
+
+import tensorflow as tf
+from tensorflow import keras, data
+from keras import layers
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Dense, Activation, Convolution2D, Dropout, Conv2D,AveragePooling2D, BatchNormalization,Flatten,GlobalAveragePooling2D
+from keras.applications import efficientnet, EfficientNetB0, MobileNetV2
+from keras.backend import clear_session
+from keras.optimizers import RMSprop, Adam, SGD
+from keras.models import Model
+import matplotlib.pyplot as plt
+from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint, LearningRateScheduler
+import random
+
+# Setting image dimension.
+IMG_SIZE = 224
 
 class DeepfakeDetectiveModel():
-    def __init__(self, x_train, y_train, x_val, y_val, x_test, y_test):
+    def __init__(self, x_train, y_train, x_val, y_val):
         self.x_train = x_train
         self.y_train = y_train
         self.x_val = x_val
         self.y_val = y_val
-        self.x_test = x_test
-        self.y_test = y_test
         self.model = self.build()
 
     def build(self):
@@ -34,32 +42,43 @@ class DeepfakeDetectiveModel():
             layers.experimental.preprocessing.RandomZoom(0.1)
         ])
 
-        model = tf.keras.Sequential([
+        # Initialize the base model with pre-trained ImageNet weights, and fine-tune it on the dataset.
+        # Load the Base Model (using the B0 version)
+        base_model = MobileNetV2(input_shape=(224, 224, 3), include_top=False, weights='imagenet')
+
+        # Freeze the model weights.
+        #for layer in base_model.layers:
+            #layer.trainable = False
+
+        average_layer = GlobalAveragePooling2D()
+
+        model = Sequential([
             data_augmentation,
-            tf.keras.applications.EfficientNetB0(
-                input_shape=(224,224,3),
-                weights='imagenet',
-                include_top=False,
-                drop_connect_rate=0.5
-            ),
-            GlobalAveragePooling2D(),
+            base_model,
+            average_layer,
+            Dense(224, activation=tf.nn.relu),
+            BatchNormalization(),
+            Dropout(0.2),
             Dense(units=1, activation='sigmoid')
         ])
 
-        model.compile(
-            optimizer = 'adam', 
-            loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True), 
-            metrics=['accuracy']
-            )
+        earlystopping = EarlyStopping(monitor='val_loss', verbose=1, mode='min', patience=25)
+        checkpointer = ModelCheckpoint(filepath="effnet_test.hdf5", verbose=1, save_best_only=True)
+        reduce_lr = ReduceLROnPlateau(monitor='val_loss',mode='min', verbose=1, patience=10,min_delta=0.0001,factor=0.2)
 
+        callbacks = [checkpointer, earlystopping, reduce_lr]
+
+        # Compile and Fit.
+        opt = Adam(lr=0.001)
+        model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy'])
         history = model.fit(
-            self.x_train, self.y_train,
-            validation_data=(self.x_val, self.y_val),
-            epochs= 20
-        )
-
+            self.x_train, self.y_train, 
+            epochs = 100,
+            validation_data=(self.x_val, self.y_val), 
+            callbacks = callbacks,
+            verbose=1)
+        
         self.plot_performance(history)
-
         return model
 
     def plot_performance(self, history):

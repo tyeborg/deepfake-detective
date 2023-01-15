@@ -93,8 +93,8 @@ class Preprocess(Processor):
             else:
                 labels.append(1)
 
-        # Return the images and labels numpy arrays.
-        return np.array(images), np.array(labels)
+        # Return a the image data along with each images' label.
+        return np.array(images, dtype='float')/255.0, np.array(labels)
 
     def get_label(self, path):
         if path == self.deepfake_dir:
