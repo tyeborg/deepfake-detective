@@ -4,13 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Enable access to BoxIcons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Reference our CSS -->
+    <link href="{{url_for('static',filename='style.css')}}" rel = "stylesheet" type="text/css">
+    <script src="{{url_for('static',filename='app.js')}}" async defer></script>
     <title>Document</title>
 </head>
 <body>
+
     <form action="/upload" method="POST" enctype="multipart/form-data">
-        <label for="file">File:</label>
-        <input type="file" id="file" name="file"><br />
-        <button>Upload</button>
+        <div class="container">
+            <input type="file" id="file" name="file" accept="image/*" hidden>
+            <div class="img-area" data-img="hello.png">
+                <i class='bx bxs-cloud-upload icon'></i>
+                <h3>Upload Image</h3>
+                <p>Image size must be less than <span>2MB</span></p>
+                <img src="{{url_for('static',filename='images/dfd-concept.jpeg')}}" alt="">
+            </div>
+            <button class="select-image">Select Image</button>
+        </div>
     </form>
 </body>
 </html>
