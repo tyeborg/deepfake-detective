@@ -1,4 +1,17 @@
 // Initialize variables.
+const selectImage = document.querySelector('.select-image');
+const inputFile = document.querySelector('#file');
+
+// Enable the SELECT FILE button to access computer files upon a clic.
+selectImage.addEventListener('click', function () {
+    inputFile.click()
+})
+inputFile.addEventListener('change', function () {
+    const image = this.files[0];
+    console.log(image);
+})
+
+// Initialize variables.
 const form = document.querySelector("form"),
 fileInput = form.querySelector(".file-input"),
 progressArea = document.querySelector(".progress-area"),
