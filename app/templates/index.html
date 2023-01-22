@@ -12,18 +12,44 @@
     <title>Document</title>
 </head>
 <body>
-
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-        <div class="container">
-            <input type="file" id="file" name="file" accept="image/*" hidden>
-            <div class="img-area" data-img="hello.png">
-                <i class='bx bxs-cloud-upload icon'></i>
-                <h3>Upload Image</h3>
-                <p>Image size must be less than <span>2MB</span></p>
-                <img src="{{url_for('static',filename='images/dfd-concept.jpeg')}}" alt="">
+    <div class="wrapper">
+        <div class="form-container">
+            <div class="slide-controls">
+                <input type="radio" name="slider" id="image" checked>
+                <input type="radio" name="slider" id="video">
+                <label for="image" class="slide image-toggle">Image</label>
+                <label for="video" class="slide video-toggle">Video</label>
+                <div class="slide-tab"></div>
             </div>
-            <button class="select-image">Select Image</button>
+            <div class="form-inner">
+                <form action="/uploadImage" method="POST" enctype="multipart/form-data" class="img-upload">
+                    <div class="img-area" id="displayImg" data-img="">
+                        <h3>Deepfake Image Detector</h3>
+                        <input type="file" id="imgUploadBtn" name="file" class="form-input" hidden>
+                        <label for="imgUploadBtn"><i class="uil uil-image-upload"></i>Upload Image</label>
+                        <p>Supports: JPEG, JPG, PNG</p>
+                    </div>
+                    <section id="imgErrorArea" class="error-area"></section>
+                    <section id="imgUploadedArea" class="uploaded-area"></section>
+                    <button type="submit" class="processBtn btnLoading" id="imgProcessBtn" disabled>
+                        <span class="processBtnText">Process Image</span>
+                    </button>
+                </form>
+                <form action="#" class="video-upload">
+                    <div class="img-area" id="displayVideo" data-img="">
+                        <h3>Deepfake Video Detector</h3>
+                        <input type="file" id="videoUploadBtn" name="file" accept="video/*" class="form-input" hidden>
+                        <label for="videoUploadBtn"><i class="uil uil-video"></i>Upload Video</label>
+                        <p>Supports: MP4, MOV</p>
+                    </div>
+                    <section id="videoErrorArea" class="error-area"></section>
+                    <section id="videoUploadedArea" class="uploaded-area"></section>
+                    <button type="submit" class="processBtn btnLoading" id="videoProcessBtn" disabled>
+                        <span class="processBtnText">Process Image</span>
+                    </button>
+                </form>
+            </div>
         </div>
-    </form>
+    </div>
 </body>
 </html>

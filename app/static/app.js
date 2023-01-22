@@ -1,143 +1,194 @@
-// Initialize variables.
-const selectImage = document.querySelector('.select-image');
-const inputFile = document.querySelector('#file');
+const processBtn = document.querySelector(".processBtn");
+//processBtn.classList.add("btnLoading");
+//processBtn.classList.remove("btnLoading");
 
-// Enable the SELECT FILE button to access computer files upon a clic.
-selectImage.addEventListener('click', function () {
-    inputFile.click()
+window.addEventListener("load", () => {
+    processBtn.classList.add("btnLoading");
+
+    processBtn.addEventListener("transitionend", () => {
+        processBtn.classList.remove("btnLoading");
+    })
 })
-inputFile.addEventListener('change', function () {
-    const image = this.files[0];
-    console.log(image);
-})
 
-// Initialize variables.
-const form = document.querySelector("form"),
-fileInput = form.querySelector(".file-input"),
-progressArea = document.querySelector(".progress-area"),
-uploadedArea = document.querySelector(".uploaded-area");
-errorArea = document.querySelector(".error-area");
 
-// Enable file input to be activated upon a user's click.
-form.addEventListener("click", () => {
-    fileInput.click();
+// ------------------------------------------------------------ //
+// Initialize variables for form switching by button clicks.
+const imageForm = document.querySelector("form.img-upload")
+const videoForm = document.querySelector("form.video-upload")
+const imageBtn = document.querySelector("label.image-toggle")
+const videoBtn = document.querySelector("label.video-toggle")
+
+// Switch from imageForm to videoForm upon button click.
+videoBtn.onclick = (() => {
+    imageForm.style.marginLeft = "-50%";
+
+});
+// Switch from videoForm to imageForm upon button click.
+imageBtn.onclick = (() => {
+    imageForm.style.marginLeft = "0%";
 });
 
-fileInput.onchange = ({target}) => {
-    // Receive the first file the user uploads.
-    let file = target.files[0]
-    
-    validateFile(file);  
-}
+// ------------------------------------------------------------ //
 
-function getFilename(file) {
-    // Setting selected file name
-    let fileName = file.name;
+const inputImg = document.querySelector("#imgUploadBtn");
+const inputVid = document.querySelector("#videoUploadBtn");
+const imgAreaDisplay = document.querySelector("#displayImg");
+const videoAreaDisplay = document.querySelector("#displayVideo");
 
-    // Determine if the filename exceeds 7 characters.
-    if(fileName.length >= 7) {
-        let splitName = fileName.split('.');
-        // Modify the filename as its too long to showcase in the sections.
-        fileName = splitName[0].substring(0, 7) + "... ." + splitName[1];
-    }
+inputVid.addEventListener('change', function () {
+    const videoFile = this.files[0];
 
-    return fileName;
-}
+    const videoErrorArea = document.querySelector("#videoErrorArea");
+    const videoUploadedArea = document.querySelector("#videoUploadedArea");
+    const videoProcessBtn = document.querySelector("#videoProcessBtn");
 
-function validateFile(file) {
-    // Ensure the right file type was uploaded.
-    // Initialize a variable defining the file type of the uploaded file.
-    let fileType = file.type;
     // Initialize a list of all the valid file extensions
-    let validExtensions = ['video/mp4', 'video/mov', 'image/jpeg', 'image/jpg', 'image/png'];
-    // Initialize a variable that will showcase the filename.
-    let fileName = getFilename(file);
+    let validExtensions = ['video/mp4', 'video/mov'];
 
-    // Determine if the uploaded file includes the mp4 or mov extension.
-    if(validExtensions.includes(fileType)){
-        // Calling uploadFile with passing file name as an argument
-        uploadFile(file.name);
-    }else {
-        let errorHTML = `<li class="row">
-                            <div class="content">
-                                <i class="fas fa-file-circle-xmark"></i>
-                                <div class="details">
-                                    <span class="error">${fileName} is not an MP4 or MOV</span>
-                                </div>
-                            </div>
-                            <i class="fas fa-circle-exclamation"></i>
-                        </li>`
+    validateFile(videoFile, validExtensions, videoUploadedArea, videoErrorArea, videoProcessBtn);
 
-        // Clear the progress/uploaded area, in case the user uploads additional files
-        progressArea.innerHTML = "";
-        uploadedArea.innerHTML = "";
-        errorArea.innerHTML = errorHTML;
+    if(validExtensions.includes(videoFile.type)) {
+        // Display the image in the 'upload image' area.
+        displayVideo(videoFile);
     }
-}
+});
 
-function uploadFile(name) {
-    // Create new xml obj (AJAX)
-    let xhr = new XMLHttpRequest(); 
-    var url = 'upload.php'; 
+inputImg.addEventListener('change', function () {
+    const image = this.files[0];
 
-    // Send post request to the specified URL/File
-    xhr.open("POST", url, true);
+    const imgErrorArea = document.querySelector("#imgErrorArea");
+    const imgUploadedArea = document.querySelector("#imgUploadedArea");
+    const imgProcessBtn = document.querySelector("#imgProcessBtn");
 
-    //Send the proper header information along with the request
-    //xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    
-    xhr.upload.addEventListener("progress", ({loaded, total}) => {
-        // Get percentage of loaded file size
-        let fileLoaded = Math.floor((loaded / total) * 100);
-        // Get file size in KB from bytes
-        let fileTotal = Math.floor(total / 1000);
-        let fileSize;
+    // Initialize a list of all the valid file extensions
+    let validExtensions = ['image/jpeg', 'image/jpg', 'image/png'];
 
-        // If file size is less than 1024 then add only KB else convert size from KB to MB
-        (fileTotal < 1024) ? fileSize = fileTotal + " KB" : fileSize = (loaded / (1024 * 1024)).toFixed(2) + " MB";
+    validateFile(image, validExtensions, imgUploadedArea, imgErrorArea, imgProcessBtn);
 
-        let progressHTML = `<li class="row">
-                                <i class="fas fa-file-alt"></i>
+    if(validExtensions.includes(image.type)) {
+        // Display the image in the 'upload image' area.
+        displayImg(image);
+    }
+});
+
+// Construct a function that validates a file with a corresponding file extension.
+function validateFile(file, validExtensions, uploadedArea, errorArea, processBtn) {
+    // Ensure the right file type was uploaded
+    // Initialize a variable defining the file type of the uploaded file
+    let fileType = file.type;
+    let altFileType = fileType.split("/")[1];
+
+    if(validExtensions.includes(fileType)) {
+        // Setting selected file name
+        let fileName = file.name;
+        // Initialize a variable for the file size.
+        let fileSize = convertBytes(file.size);
+        
+        // Alter the filename depending if it is too long or not.
+        if(fileName.length >= 7) {
+            let splitName = fileName.split('.');
+            fileName = splitName[0].substring(0, 7) + "... ." + splitName[1];
+        }
+
+        // Clear the progress area, in case the user uploads additional files
+        errorArea.innerHTML = "";
+
+        let uploadedHTML = `<li class="row">
                                 <div class="content">
+                                    <i class="uil uil-check-circle"></i>
                                     <div class="details">
-                                        <span class="name">${name} • Uploading</span>
-                                        <span class="percent">${fileLoaded}%</span>
-                                    </div>
-                                    <div class="progress-bar">
-                                        <div class="progress" style="width: ${fileLoaded}%"></div>
+                                        <span class="name">${fileName} • Uploaded</span>
                                     </div>
                                 </div>
+                                <span class="size">${fileSize}</span>
                             </li>`;
         
-        uploadedArea.classList.add("onprogress");
+        // Update the area with the 'updated information'.                    
+        uploadedArea.innerHTML = uploadedHTML;
+
+        // Enable button here!
+        processBtn.disabled = false;
+
+    }else {
+        // Display Error message in error section.
+        let errorHTML = `<li class="row">
+                            <div class="content">
+                                <i class="uil uil-file-slash"></i>
+                                <div class="details">
+                                    <span class="error">Error: ${altFileType} file is not applicable</span>
+                                </div>
+                            </div>
+                            <i class="uil uil-exclamation-circle"></i>
+                        </li>`
+        
         // Clear the progress area, in case the user uploads additional files
         uploadedArea.innerHTML = "";
-        errorArea.innerHTML = "";
-        // Set up the progress area after user selects file
-        progressArea.innerHTML = progressHTML;
-        
-        // Set up the 'Completed Uploaded' area if file uploaded successfully
-        if(loaded == total) {
-            progressArea.innerHTML = "";
-            let uploadedHTML = `<li class="row">
-                                    <div class="content">
-                                        <i class="fas fa-file-alt"></i>
-                                        <div class="details">
-                                            <span class="name">${name} • Uploaded</span>
-                                            <span class="size">${fileSize}</span>
-                                        </div>
-                                    </div>
-                                    <i class="fas fa-check"></i>
-                                </li>`;
+        // Update the area with the 'error information'.
+        errorArea.innerHTML = errorHTML;
 
-            uploadedArea.classList.remove("onprogress");
-            uploadedArea.innerHTML = uploadedHTML;
-            //uploadedArea.insertAdjacentHTML("afterbegin", uploadedHTML);
-        }
-    });
-    // FormData is an object to easily send form data
-    let data = new FormData(form);
-    //data.append("file", name);
-    // Sending form data to php
-    xhr.send(data);
+        // Disable button here!
+        processBtn.disabled = true;
+    }
+}
+
+function displayVideo(videoFile) {
+    // Make the newly uploaded video display on the upload area.
+    const reader = new FileReader();
+    reader.onload = () => {
+        // Remove the previous item in the upload queue.
+        const allImg = videoAreaDisplay.querySelectorAll('video');
+        allImg.forEach(item => item.remove());
+        
+        // Read the newly uploaded video.
+        const vidUrl = reader.result;
+        const vid = document.createElement('video');
+
+        vid.src = vidUrl
+        // Add the image to the image area when user has uploaded it.
+        videoAreaDisplay.appendChild(vid);
+        vid.controls = true;
+        vid.load();
+        //vid.play();
+        videoAreaDisplay.classList.add('active');
+    }
+    reader.readAsDataURL(videoFile)
+}
+
+function displayImg(image) {
+    // Make the newly uploaded image display on the upload image area.
+    const reader = new FileReader();
+    reader.onload = () => {
+        // Remove the previous image in the upload queue.
+        const allImg = imgAreaDisplay.querySelectorAll('img');
+        allImg.forEach(item => item.remove());
+        
+        // Read the newly uploaded image.
+        const imgUrl = reader.result;
+        const img = document.createElement('img');
+        img.src = imgUrl
+        // Add the image to the image area when user has uploaded it.
+        imgAreaDisplay.appendChild(img);
+        imgAreaDisplay.classList.add('active');
+    }
+    reader.readAsDataURL(image)
+}
+
+// Create a function that determines the size of a file.
+function convertBytes(num) {
+    // Initialize variables.
+    let diff = num < 0;
+    let units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    if (diff) {
+        num = -num;
+    }
+    if (num < 1) {
+        return (diff ? '-' : '') + num + ' B';
+    }
+
+    let exponent = Math.min(Math.floor(Math.log(num) / Math.log(1000)), units.length - 1);
+    num = Number((num / Math.pow(1000, exponent)).toFixed(2));
+    let unit = units[exponent];
+
+    return (diff ? '-' : '') + num  + ' ' + unit;
 }

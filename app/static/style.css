@@ -21,51 +21,119 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: #a5b8e9;
+    background: #2c3e50;
 }
 
 /* Define the dimensions of the file uploader container */
-.container {
+.wrapper {
     /*max-width: 400px;*/
     /*width: 100%;*/
+    overflow: hidden;
     width: 400px;
     background: #fff;
     padding: 30px;
     border-radius: 30px;
 }
 
+.wrapper .form-container{
+    width: 100%;
+    overflow: hidden;
+}
+
+.form-container .slide-controls {
+    position: relative;
+    display: flex;
+    height: 50px;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 5px;
+    margin: 0 0 30px 0;
+    justify-content: space-between;
+    border: 1px solid lightgrey;
+}
+.slide-controls .slide {
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 48px;
+    cursor: pointer;
+    transition: all 0.6s ease;
+}
+.slide-controls .video-toggle {
+    color: #000;
+}
+.slide-controls .slide-tab {
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    left: 0;
+    z-index: 0;
+    border-radius: 5px;
+    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    background: var(--blue);
+}
+/* Hide the radio input */
+input[type="radio"] {
+    display: none;
+}
+/* Move slide tab once in check mode */
+#video:checked ~ .slide-tab {
+    left: 50%;
+}
+/* Change video label text to color white once video input is in checked mode */
+#video:checked ~ .video-toggle {
+    color: #fff;
+}
+/* Change image label text to color black once image input is not in checked mode */
+#video:checked ~ .image-toggle {
+    color: #000;
+}
+
+.form-container .form-inner {
+    display: flex;
+    width: 200%;
+}
+.form-container .form-inner form {
+    width: 50%;
+    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Style the drag and drop area */
 .img-area {
     position: relative;
     width: 100%;
     height: 240px;
     background: var(--grey);
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     border-radius: 15px;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    border: 3px dashed #6990f2;
 }
-
-.img-area .icon {
-    font-size: 100px;
-}
-
 .img-area h3 {
     font-size: 20px;
-    font-weight: 500;
-    margin-bottom: 6px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-transform: uppercase;
 }
-
-/* Delete this later */
 .img-area p {
     color: #999;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    margin-top: 12px;
 }
 .img-area p span {
     font-weight: 600;
 }
-
 .img-area img {
     position: absolute;
     top: 0;
@@ -76,6 +144,20 @@ body {
     object-position: center;
     z-index: 100;
 }
+.img-area video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 100;
+}
+.img-area video .controls {
+    width: 100%;
+    position: absolute;
+  }
 .img-area::before {
     content: attr(data-img);
     position: absolute;
@@ -95,25 +177,171 @@ body {
     transition: all .3s ease;
     z-index: 200;
 }
-.img-area.active:hover::before {
+/*.img-area.active:hover::before {
     opacity: 1;
+}*/
 
+.img-area.active{
+    border: 4px solid #6990f2;
 }
 
-/* Format the SELECT FILE button */
-.select-image {
+/* Style the SELECT IMAGE button */
+.img-area input[type="file"]{
+    display: none;
+}
+.img-area label {
+    display: inline-block;
+    text-transform: uppercase;
+    color: #fff;
+    background: #2C3E54;
+    height: 50px;
+    text-align: center;
+    padding: 9px 20px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    user-select: none;
+    cursor: pointer;
+    border-radius: 40px;
+    transition: all .3s ease;
+}
+.img-area label i {
+    font-size: 20px;
+    margin-right: 10px;
+}
+.img-area label:active {
+    transform: scale(0.98);
+}
+.img-area label:hover {
+    background: #28333F;
+}
+
+/* Style the PROCESS FILE button */
+.processBtn {
+    position: relative;
     display: block;
     width: 100%;
     padding: 16px 0;
     border-radius: 15px;
     background: var(--blue);
-    color: #fff;
-    font-weight: 500;
-    font-size: 16px;
     border: none;
     cursor: pointer;
     transition: all .3s ease;
 }
-.select-image:hover {
+.processBtn .processBtnText {
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+}
+.processBtn:hover {
     background: var(--dark-blue);
+}
+.processBtn:active {
+    transform: scale(0.98);
+}
+.processBtn:disabled {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+}
+.processBtn:disabled span{
+    color: #666666;
+}
+
+.btnLoading .processBtnText{
+    visibility: hidden;
+    opacity: 0;
+}
+.btnLoading::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    border: 4px solid transparent;
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: btnLoadingSpinner 1s ease infinite;
+}
+@keyframes btnLoadingSpinner {
+    from {
+        transform: rotate(0turn);
+    }
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+section .row {
+    margin-bottom: 10px;
+    list-style: none;
+    padding: 15px 20px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+section .details span {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* Style the error area message */
+.error-area .row .content {
+    display: flex;
+    align-items: center;
+}
+.error-area .row .details {
+    display: flex;
+    margin-left: 15px;
+    flex-direction: column;
+    color: #af4242;
+}
+.error-area .uil-exclamation-circle {
+    color: #af4242;
+    font-size: 19px;
+}
+.error-area .uil-file-slash {
+    color: #af4242;
+}
+.error-area .row {
+    background: #fde8ec;
+}
+
+/* Style the uploaded area message */
+.uploaded-area .row .content {
+    display: flex;
+    align-items: center;
+}
+.uploaded-area .row .details {
+    display: flex;
+    margin-left: 15px;
+    flex-direction: column;
+    color: #16502e;
+}
+.uploaded-area .details .size {
+    font-size: 11px;
+    color: #404040;
+}
+.uploaded-area .uil-check-circle {
+    color: #16502e;
+    font-size: 22px;
+}
+
+.uploaded-area .row span {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #16502e;
+}
+
+.uploaded-area .row {
+    background: #d6ebde;
 }
