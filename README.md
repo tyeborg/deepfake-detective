@@ -18,6 +18,13 @@ python -u app.py
 ## Deepfake Detective Concept
 <img width="1401" alt="Screen Shot 2022-10-07 at 11 49 07 PM" src="https://user-images.githubusercontent.com/96035297/194673110-b8b3e1cf-a195-4fed-8712-88fa6c0be4bb.png">
 
+## Datasets Utilized
+• [FaceForensics++][1]
+• [140k Real and Fake Faces][2]
+
+[1]: https://www.kaggle.com/datasets/sorokin/faceforensics
+[2]: https://www.kaggle.com/datasets/xhlulu/140k-real-and-fake-faces
+
 ## Languages & Tools Utilized
 
 <p float="left">
