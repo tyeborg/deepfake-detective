@@ -1,0 +1,10 @@
+Run the following commands to install packages we'll use:
+• pip install mtcnn
+• pip install tensorflow
+• pip install moviepy
+• pip install python-magic-bin==0.4.14
+• pip install opencv-python
+• pip install flask
+• pip install flask_wtf
+• pip install wtforms
+• pip install -U pylint --user

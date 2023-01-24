@@ -22,7 +22,7 @@
                 <div class="slide-tab"></div>
             </div>
             <div class="form-inner">
-                <form action="/uploadImage" method="POST" enctype="multipart/form-data" class="img-upload">
+                <form action="/uploadImage" method="POST" enctype="multipart/form-data" class="img-upload" id="imgForm">
                     <div class="img-area" id="displayImg" data-img="">
                         <h3>Deepfake Image Detector</h3>
                         <input type="file" id="imgUploadBtn" name="file" class="form-input" hidden>
@@ -31,7 +31,7 @@
                     </div>
                     <section id="imgErrorArea" class="error-area"></section>
                     <section id="imgUploadedArea" class="uploaded-area"></section>
-                    <button type="submit" class="processBtn btnLoading" id="imgProcessBtn" disabled>
+                    <button type="submit" class="processBtn btnLoading" id="imgProcessBtn" onclick="handleFormSubmit()" disabled>
                         <span class="processBtnText">Process Image</span>
                     </button>
                 </form>

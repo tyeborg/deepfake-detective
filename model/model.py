@@ -1,7 +1,3 @@
-# pip install -U efficientnet
-# pip install tensorflow --upgrade
-# pip install tensorflow==2.9.1
-
 import numpy as np 
 import pandas as pd
 import cv2

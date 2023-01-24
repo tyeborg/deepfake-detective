@@ -1,17 +1,11 @@
-# pip install flask
-# pip install flask_wtf
-# pip install wtforms
-# pip install python-magic-bin==0.4.14
-# pip install -U pylint --user
-
 # Import the appropriate libraries for future use.
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
-from werkzeug.utils import secure_filename
-from flask_wtf import FlaskForm
-from wtforms import FileField
 import os
 import dlib
 import magic
+from wtforms import FileField
+from flask_wtf import FlaskForm
+from werkzeug.utils import secure_filename
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 
 # Import the DeepfakeDetective class.
 from deepfake_detective import DeepfakeDetective, ImageInput, VideoInput

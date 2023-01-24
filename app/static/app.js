@@ -1,17 +1,3 @@
-const processBtn = document.querySelector(".processBtn");
-//processBtn.classList.add("btnLoading");
-//processBtn.classList.remove("btnLoading");
-
-window.addEventListener("load", () => {
-    processBtn.classList.add("btnLoading");
-
-    processBtn.addEventListener("transitionend", () => {
-        processBtn.classList.remove("btnLoading");
-    })
-})
-
-
-// ------------------------------------------------------------ //
 // Initialize variables for form switching by button clicks.
 const imageForm = document.querySelector("form.img-upload")
 const videoForm = document.querySelector("form.video-upload")
@@ -85,9 +71,9 @@ function validateFile(file, validExtensions, uploadedArea, errorArea, processBtn
         let fileSize = convertBytes(file.size);
         
         // Alter the filename depending if it is too long or not.
-        if(fileName.length >= 7) {
+        if(fileName.length >= 8) {
             let splitName = fileName.split('.');
-            fileName = splitName[0].substring(0, 7) + "... ." + splitName[1];
+            fileName = splitName[0].substring(0, 8) + "... ." + splitName[1];
         }
 
         // Clear the progress area, in case the user uploads additional files
@@ -191,4 +177,28 @@ function convertBytes(num) {
     let unit = units[exponent];
 
     return (diff ? '-' : '') + num  + ' ' + unit;
+}
+
+function handleFormSubmit() {
+    //const processBtn = document.querySelector(".processBtn");
+    const imgProcessBtn = document.querySelector("#imgProcessBtn");
+    const imgForm = document.querySelector("#imgForm");
+    //processBtn.classList.add("btnLoading");
+    //processBtn.classList.remove("btnLoading");
+
+    imgProcessBtn.addEventListener("click", function () {
+        imgForm.submit();
+
+        window.addEventListener("load", () => {
+            imgProcessBtn.classList.add("btnLoading");
+        });
+    });
+
+    //window.addEventListener("load", () => {
+        //processBtn.classList.add("btnLoading");
+
+        //processBtn.addEventListener("transitionend", () => {
+            //processBtn.classList.remove("btnLoading");
+        //})
+    //})  
 }
