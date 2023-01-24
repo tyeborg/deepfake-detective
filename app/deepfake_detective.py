@@ -48,7 +48,7 @@ class ImageInput(DeepfakeDetective):
     def __init__(self, input_file):
         super().__init__(input_file)
         # Initialize a variable that reads the image.
-        self.img = cv.imread(self.input_file)
+        self.img = super().read_img(self.input_file)
 
         # Locate the face and number of faces within the input frame.
         self.face = super().find_face(self.img)

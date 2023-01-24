@@ -186,11 +186,9 @@ class FaceForensics(Preprocess):
                 video = path + video
                 # Obtain the video FPS.
                 fps = super().get_video_length(video)[1]
-                # Initilaize the a variable that determines that extraction time of each frame.
-                framerate = fps * 4
 
                 # Obtain every frame per second within the video.
-                frames = super().extract_frames(video, framerate)
+                frames = super().extract_frames(video, fps)
 
                 # Store the frames respectively.
                 self.store_frames(frames, label)
