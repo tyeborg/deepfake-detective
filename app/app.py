@@ -1,7 +1,7 @@
 # Import the appropriate libraries for future use.
 import os
 #import dlib
-import magic
+#import magic
 from wtforms import FileField
 from flask_wtf import FlaskForm
 from werkzeug.utils import secure_filename
