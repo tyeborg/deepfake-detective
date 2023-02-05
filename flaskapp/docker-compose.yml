@@ -1,0 +1,10 @@
+version: '3.3'
+services:
+  deepfake-detective:
+    build:
+      context: ./
+    volumes:
+      - .:/src
+    command: python app.py
+    ports:
+      - "3000:3000"
