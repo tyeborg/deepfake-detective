@@ -15,4 +15,4 @@ RUN pip install -r requirements.txt
 EXPOSE 3000
 
 # Run the command to start uWSGI
-CMD python ./run.py
+CMD python ./app.py
