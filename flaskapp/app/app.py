@@ -71,7 +71,3 @@ def create_app():
         return render_template ("index.html")
 
     return app
-
-if __name__ =='__main__':
-    app = create_app()
-    app.run(host="0.0.0.0", port=int("3000"), debug=True)
