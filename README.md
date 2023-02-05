@@ -5,15 +5,17 @@ Project Outline: Deepfakes have become an increasing concern. Particularly with 
 ## Installation
 Clone this repository by `git clone https://github.com/tyeborg/deepfake-detective.git`.
 
-Navigate to the `app` folder/change the working directory by entering the following in the command line: 
+Navigate to the `flaskapp` folder/change the working directory by entering the following in the command line: 
 ```bash
-cd app
+cd flaskapp
 ```
+Open the Docker Application and ensure that you don't have any other containers running usind `docker ps`
 
-Enter the following to run the program:
+Enter the following to build the Docker container:
 ```bash
-python -u app.py
+docker-compose up --build
 ```
+Visit your express app at: `http://localhost:3000`
 
 ## Deepfake Detective Concept
 <img width="1401" alt="Screen Shot 2022-10-07 at 11 49 07 PM" src="https://user-images.githubusercontent.com/96035297/194673110-b8b3e1cf-a195-4fed-8712-88fa6c0be4bb.png">
@@ -29,6 +31,6 @@ python -u app.py
 
 <p float="left">
   <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=js,python,flask,html,css,php,git,vscode" />
+    <img src="https://skillicons.dev/icons?i=js,python,flask,html,css,docker,git,vscode" />
   </a>
 </p>
