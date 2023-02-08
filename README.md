@@ -1,4 +1,4 @@
-# Deepfake Detector Web App
+# Deepfake Detective Web App
 
 Project Outline: Deepfakes have become an increasing concern. Particularly with regards to their potential for promoting fake news, damaging reputations and broader societal impacts. This project will focus on an investigation, implementation and analysis of deepfake technology.
 
@@ -9,13 +9,13 @@ Navigate to the `flaskapp` folder/change the working directory by entering the f
 ```bash
 cd flaskapp
 ```
-Open the Docker Application and ensure that you don't have any other containers running usind `docker ps`
+Open the Docker Application and ensure that you don't have any other containers running using `docker ps`
 
 Enter the following to build the Docker container:
 ```bash
 docker-compose up --build
 ```
-Visit your express app at: `http://localhost:3000`
+Visit Deepfake Detective app at: `http://localhost:3000`
 
 ## Deepfake Detective Concept
 <img width="1401" alt="Screen Shot 2022-10-07 at 11 49 07 PM" src="https://user-images.githubusercontent.com/96035297/194673110-b8b3e1cf-a195-4fed-8712-88fa6c0be4bb.png">
