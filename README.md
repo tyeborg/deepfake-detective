@@ -3,19 +3,19 @@
 Project Outline: Deepfakes have become an increasing concern. Particularly with regards to their potential for promoting fake news, damaging reputations and broader societal impacts. This project will focus on an investigation, implementation and analysis of deepfake technology.
 
 ## Installation
-Clone this repository by `git clone https://github.com/tyeborg/deepfake-detective.git`.
+1). Clone this repository by `git clone https://github.com/tyeborg/deepfake-detective.git`.
 
-Navigate to the `flaskapp` folder/change the working directory by entering the following in the command line: 
+2). Navigate to the `flaskapp` folder/change the working directory by entering the following in the command line: 
 ```bash
 cd flaskapp
 ```
-Open the Docker Application and ensure that you don't have any other containers running using `docker ps`
+3). Open the Docker Application and ensure that you don't have any other containers running using `docker ps`
 
-Enter the following to build the Docker container:
+4). Enter the following to build the Docker container:
 ```bash
 docker-compose up
 ```
-Visit Deepfake Detective app at: `http://localhost:3000`
+5). Visit Deepfake Detective app at: `http://localhost:3000`
 
 ## Deepfake Detective Concept
 <img width="1401" alt="Screen Shot 2022-10-07 at 11 49 07 PM" src="https://user-images.githubusercontent.com/96035297/194673110-b8b3e1cf-a195-4fed-8712-88fa6c0be4bb.png">
