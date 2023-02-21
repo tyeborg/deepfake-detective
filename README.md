@@ -13,7 +13,7 @@ cd flaskapp
 
 4). Enter the following to build the Docker container:
 ```bash
-docker-compose up
+docker-compose up --build
 ```
 5). Visit Deepfake Detective app at: `http://localhost:3000`
 
