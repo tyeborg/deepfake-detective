@@ -13,7 +13,7 @@ Open the Docker Application and ensure that you don't have any other containers 
 
 Enter the following to build the Docker container:
 ```bash
-docker-compose up --build
+docker-compose up
 ```
 Visit Deepfake Detective app at: `http://localhost:3000`
 
