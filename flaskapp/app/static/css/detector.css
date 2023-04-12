@@ -10,11 +10,14 @@
 }
 
 :root {
-    --bg-color: #1f1f21;
+    --bg-color: #0e1117;
     --blue: #0071FF;
     --light-blue: #B6DBF6;
     --dark-blue: #005DD1;
     --grey: #f2f2f2;
+
+    --text-color: #fff;
+    --main-color: #3096da;
 }
 
 body {
@@ -23,6 +26,29 @@ body {
     justify-content: center;
     min-height: 100vh;
     background: var(--bg-color);
+}
+
+header {
+    position: absolute;
+    top: 5px;
+    right: 175px;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px 15%;
+    background: transparent;
+    transition: all ease .45s;
+}
+.logo {
+    position: fixed;
+    color: var(--text-color);
+    font-size: 25px;
+    font-weight: 600;
+}
+.logo span {
+    color: var(--main-color)
 }
 
 .bigContainer {
