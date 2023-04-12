@@ -1,0 +1,199 @@
+/* Import Google font - Rubik */
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
+/* Import Google font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Roboto+Condensed:wght@300;700&display=swap');
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Rubik', sans-serif;
+    list-style: none;
+    text-decoration: none;
+}
+
+:root {
+    --bg-color: #1f1f21;
+    --text-color: #fff;
+    --main-color: #3096da;
+    --big-font: 7rem;
+    --p-font: 1.1rem;
+}
+
+body{
+    background: var(--bg-color);
+    color: var(--text-color);
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+header {
+    position: fixed;
+    top: 20px;
+    right: 25px;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px 15%;
+    background: transparent;
+    transition: all ease .45s;
+}
+.logo {
+    color: var(--text-color);
+    font-size: 25px;
+    font-weight: 600;
+}
+.logo span {
+    color: var(--main-color)
+}
+
+section {
+    padding: 0 15%;
+    background: url(../images/homepage.jpg) no-repeat fixed 100%;
+    background-size: cover;
+}
+.home {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.homeText{
+    position: absolute;
+    z-index: 10;
+    left: 6vw;
+    top: 25vh;
+}
+
+.homeText h2{
+    font-family: "Poppins";
+    left: 6vw;
+    font-size: 65px;
+    font-weight: 700;
+    line-height: 1em;
+    position: static;
+    overflow: hidden;
+}
+
+.homeText h3{
+    font-family: "Poppins";
+    left: 6vw;
+    font-size: 60px;
+    font-weight:700;
+    line-height: 1.3em;
+    position: static;
+    overflow: hidden;
+}
+
+.homeText p{
+    font-family: "Poppins";
+    left: 6vw;
+    font-size: 1.4em;
+    margin-top: 20px;
+    margin-bottom: 35px;
+    font-weight: 400;
+    max-width: 625px;
+    color: lavender;
+    opacity: 70%;
+}
+
+.btn {
+    display: inline-block;
+    padding: 14px 34px;
+    background: var(--main-color);
+    color: var(--text-color);
+    border: 2px solid var(--main-color);
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.6s ease-in-out;
+}
+.btn:hover {
+    transform: translateY(-5px);
+    background: transparent;
+    color: var(--main-color);
+}
+.repoBtn {
+    background: #141414;
+    border: 2px solid #141414;
+    color: var(--text-color);
+    margin-left: 25px;
+}
+.repoBtn:hover {
+    color: #141414;
+    background: var(--text-color);
+    border: 2px solid var(--text-color);
+}
+
+@media (max-width: 1850px) {
+    header {
+        padding: 15px 8%;
+        transition: .2s;
+    }
+    section {
+        padding: 0 8%;
+        transition: .2s;
+    }
+}
+
+@media (max-width: 1370px) {
+    header {
+        padding: 15px 4%;
+        transition: .2s;
+    }
+    section {
+        padding: 0 4%;
+        transition: .2s;
+    }
+    :root {
+        --big-font: 5.5rem;
+        --p-font: 1rem;
+        transition: .2s;
+    }
+}
+
+@media (max-width: 1020px) {
+    :root {
+        --big-font: 5rem;
+        --p-font: 1rem;
+        transition: .2s;
+    }
+}
+
+@media (max-width: 950px) {
+    section {
+        padding: 0 4%;
+    }
+    header {
+        padding: 11px 4%;
+        /*background: #2d2d2d;*/
+    }
+    .home {
+        height: auto;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .homeText {
+        order: 2;
+    }
+}
+
+@media (max-width: 500px) {
+    :root {
+        --big-font: 4rem;
+        --p-font: 15px;
+        transition: .2s;
+    }
+    section {
+        padding: 0 2%;
+    }
+    .btn {
+        padding: 9px 28px;
+    }
+}

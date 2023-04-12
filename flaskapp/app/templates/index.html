@@ -1,55 +1,45 @@
 <!-- Home Page Goes Here -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Enable access to Iconscout Icons -->
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <!-- Reference our CSS -->
-    <link href="{{url_for('static',filename='style.css')}}" rel = "stylesheet" type="text/css">
-    <script src="{{url_for('static',filename='app.js')}}" async defer></script>
-    <title>Document</title>
-</head>
-<body>
-    <div class="wrapper">
-        <div class="form-container">
-            <div class="slide-controls">
-                <input type="radio" name="slider" id="image" checked>
-                <input type="radio" name="slider" id="video">
-                <label for="image" class="slide image-toggle">Image</label>
-                <label for="video" class="slide video-toggle">Video</label>
-                <div class="slide-tab"></div>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Deepfake Detective</title>
+
+        <!-- Refer to our Stylesheet -->
+        <link href="{{url_for('static', filename='css/index.css')}}" rel = "stylesheet" type="text/css">
+        <!-- Boxicons link -->
+        <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    </head>
+    <body>
+        <!-- Header section -->
+        <header>
+            <a href="/" class="logo"><span>D</span>eepfake <span>D</span>etective</a>
+        </header>
+
+        <!-- Home section -->
+        <section class="home">
+            <div class="homeText">
+
+                <h2>Confidently</h2>
+                <h3>verify authenticity</h3>
+                <p>
+                    Unmask the lies and guard your authenticity with
+                    Deepfake Detective. Real is rare, trust with care. The
+                    Deepfake Detective helps you see what's really there.
+                </p>
+
+                <div class="mainBtn">
+                    <a href="/deepfake-detective" class="btn">Try the Detective!</a>
+                    <a href="https://github.com/tyeborg/deepfake-detective" class="btn repoBtn">Visit the Repository</a>
+                </div>
             </div>
-            <div class="form-inner">
-                <form action="/uploadImage" method="POST" enctype="multipart/form-data" class="img-upload" id="imgForm">
-                    <div class="img-area" id="displayImg" data-img="">
-                        <h3>Deepfake Image Detector</h3>
-                        <input type="file" id="imgUploadBtn" name="file" class="form-input" hidden>
-                        <label for="imgUploadBtn"><i class="uil uil-image-upload"></i>Upload Image</label>
-                        <p>Supports: JPEG, JPG, PNG</p>
-                    </div>
-                    <section id="imgErrorArea" class="error-area"></section>
-                    <section id="imgUploadedArea" class="uploaded-area"></section>
-                    <button type="submit" class="processBtn btnLoading" id="imgProcessBtn" onclick="handleFormSubmit()" disabled>
-                        <span class="processBtnText">Process Image</span>
-                    </button>
-                </form>
-                <form action="#" class="video-upload">
-                    <div class="img-area" id="displayVideo" data-img="">
-                        <h3>Deepfake Video Detector</h3>
-                        <input type="file" id="videoUploadBtn" name="file" accept="video/*" class="form-input" hidden>
-                        <label for="videoUploadBtn"><i class="uil uil-video"></i>Upload Video</label>
-                        <p>Supports: MP4, MOV</p>
-                    </div>
-                    <section id="videoErrorArea" class="error-area"></section>
-                    <section id="videoUploadedArea" class="uploaded-area"></section>
-                    <button type="submit" class="processBtn btnLoading" id="videoProcessBtn" disabled>
-                        <span class="processBtnText">Process Image</span>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</body>
+        </section>
+        <!-- ScrollReveal link -->
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <!-- Refer to custom JavaScript file link -->
+        <script src="{{url_for('static',filename='js/index.js')}}"></script>
+    </body>
 </html>
