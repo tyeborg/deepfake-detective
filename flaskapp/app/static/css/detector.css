@@ -1,0 +1,610 @@
+/* Import Google font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Set the browser default */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --bg-color: #1f1f21;
+    --blue: #0071FF;
+    --light-blue: #B6DBF6;
+    --dark-blue: #005DD1;
+    --grey: #f2f2f2;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: var(--bg-color);
+}
+
+.bigContainer {
+    width: 1000px;
+    height: 600px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px 35px 35px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    display: flex;
+    margin: 20px 0;
+}
+
+/* Define the dimensions of the file uploader container */
+.wrapper {
+    overflow: hidden;
+    width: 400px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+}
+
+.wrapper .formContainer{
+    width: 100%;
+    overflow: hidden;
+}
+
+.formContainer .slideControls {
+    position: relative;
+    display: flex;
+    height: 50px;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 5px;
+    margin: 0 0 30px 0;
+    justify-content: space-between;
+    border: 1px solid lightgrey;
+}
+.slideControls .slide {
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 48px;
+    cursor: pointer;
+    transition: all 0.6s ease;
+}
+.slideControls .videoToggle {
+    color: #000;
+}
+.slideControls .slideTab {
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    left: 0;
+    z-index: 0;
+    border-radius: 5px;
+    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    background: var(--blue);
+}
+/* Hide the radio input */
+input[type="radio"] {
+    display: none;
+}
+/* Move slide tab once in check mode */
+#video:checked ~ .slideTab {
+    left: 50%;
+}
+/* Change video label text to color white once video input is in checked mode */
+#video:checked ~ .videoToggle {
+    color: #fff;
+}
+/* Change image label text to color black once image input is not in checked mode */
+#video:checked ~ .imageToggle {
+    color: #000;
+}
+
+.formContainer .formInner {
+    display: flex;
+    width: 200%;
+}
+.formContainer .formInner form {
+    width: 50%;
+    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Style the drag and drop area */
+.imgArea {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    background: var(--grey);
+    margin-bottom: 20px;
+    border-radius: 15px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 3px dashed #6990f2;
+}
+.imgArea h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+.imgArea p {
+    color: #999;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    margin-top: 12px;
+}
+.imgArea p span {
+    font-weight: 600;
+}
+.imgArea img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 100;
+}
+.imgArea video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 100;
+}
+.imgArea video .controls {
+    width: 100%;
+    position: absolute;
+}
+.imgArea::before {
+    content: attr(data-img);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5);
+    color: #fff;
+    font-weight: 500;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: all .3s ease;
+    z-index: 200;
+}
+
+.imgArea.active{
+    border: 4px solid #6990f2;
+}
+
+/* Style the SELECT IMAGE button */
+.imgArea input[type="file"]{
+    display: none;
+}
+.imgArea label {
+    display: inline-block;
+    text-transform: uppercase;
+    color: #fff;
+    background: #2C3E54;
+    height: 50px;
+    text-align: center;
+    padding: 9px 20px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    user-select: none;
+    cursor: pointer;
+    border-radius: 40px;
+    transition: all .3s ease;
+}
+.imgArea label i {
+    font-size: 20px;
+    margin-right: 10px;
+}
+.imgArea label:active {
+    transform: scale(0.98);
+}
+.imgArea label:hover {
+    background: #28333F;
+}
+
+/* Style the PROCESS FILE button */
+.processBtn {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 16px 0;
+    border-radius: 15px;
+    background: var(--blue);
+    border: none;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+.processBtn .processBtnText {
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+}
+.processBtn:hover {
+    background: var(--dark-blue);
+}
+.processBtn:active {
+    transform: scale(0.98);
+}
+.processBtn:disabled {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+}
+.processBtn:disabled span{
+    color: #666666;
+}
+
+.btnLoading .processBtnText{
+    visibility: hidden;
+    opacity: 0;
+}
+.btnLoading::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    border: 4px solid transparent;
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: btnLoadingSpinner 1s ease infinite;
+}
+@keyframes btnLoadingSpinner {
+    from {
+        transform: rotate(0turn);
+    }
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+section .row {
+    margin-bottom: 10px;
+    list-style: none;
+    padding: 15px 20px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+section .details span {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* Style the error area message */
+.errorArea .row .content {
+    display: flex;
+    align-items: center;
+}
+.errorArea .row .details {
+    display: flex;
+    margin-left: 15px;
+    flex-direction: column;
+    color: #af4242;
+}
+.errorArea .uil-exclamation-circle {
+    color: #af4242;
+    font-size: 19px;
+}
+.errorArea .uil-file-slash {
+    color: #af4242;
+}
+.errorArea .row {
+    background: #fde8ec;
+}
+
+/* Style the uploaded area message */
+.uploadedArea .row .content {
+    display: flex;
+    align-items: center;
+}
+.uploadedArea .row .details {
+    display: flex;
+    margin-left: 15px;
+    flex-direction: column;
+    color: #16502e;
+}
+.uploadedArea .details .size {
+    font-size: 11px;
+    color: #404040;
+}
+.uploadedArea .uil-check-circle {
+    color: #16502e;
+    font-size: 22px;
+}
+
+.uploadedArea .row span {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #16502e;
+}
+
+.uploadedArea .row {
+    background: #d6ebde;
+}
+
+.bigContainer .faceCaptureImg {
+    position: relative;
+    width: 525px;
+    height: 320px;
+    background: var(--grey);
+    margin-bottom: 20px;
+    margin-left: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 2px solid lightgrey;
+}
+
+.resultsWrapper .faceCaptureImg img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 100;
+}
+
+.resultsWrapper .resultsPanel {
+    position: relative;
+    width: 525px;
+    height: 195px;
+    background: #fff;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    border-radius: 5px;
+    border: 2px solid lightgrey;
+    padding: 15px;
+}
+
+.resultsWrapper .resultsPanel:before {
+  content:'';
+  display:block;
+  height:81px;
+  width:218px;
+  border-left: 2px solid lightgrey;
+  border-top: 2px solid lightgrey;
+  background-color: #fff;
+  position:absolute;
+  right:-2px;
+  bottom: 0px;
+}
+
+.resultsWrapper .resultsPanel:after {
+  content:'';
+  display:block;
+  height:82px;
+  width: 229px;
+  background-color: #fff;
+  position:absolute;
+  right: -13px;
+  bottom: -2px;
+}
+
+/* Style the RESET button */
+.resetBtn {
+    position: relative;
+    display: block;
+    width: 200px;
+    padding: 16px 0;
+    border-radius: 5px;
+    background: var(--blue);
+    border: none;
+    cursor: pointer;
+    transition: all .3s ease;
+    right: -21.3rem;
+    top: -5.5rem;
+}
+.resetBtn .resetBtnText {
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+}
+.resetBtn:hover {
+    background: var(--dark-blue);
+}
+.resetBtn:active {
+    transform: scale(0.98);
+}
+
+.resultsPanel .validationSection {
+    position: relative;
+    padding: 15px 20px;
+    height: 75px;
+    background: var(--grey);
+    margin-bottom: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid lightgrey;
+}
+
+.resultsPanel .classificationSection {
+    position: relative;
+    padding: 15px 20px;
+    height: 75px;
+    width: 272px;
+    background: var(--grey);
+    margin-bottom: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid lightgrey;
+}
+
+.faceCaptureImg {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.faceCaptureImg video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 100;
+}
+.faceCaptureImg video .controls {
+    width: 100%;
+    position: absolute;
+}
+.faceCaptureImg .uil-image {
+    color: #999;
+    font-size: 40px;
+}
+
+/* Style the uploaded area message */
+.classificationSection .row .content {
+    display: flex;
+    align-items: center;
+}
+.classificationSection .authenticRow .details {
+    display: flex;
+    margin-left: 15px;
+    flex-direction: column;
+    color: #16502e;
+}
+.classificationSection .details .size {
+    font-size: 11px;
+    color: #404040;
+}
+.classificationSection .uil-smile-beam {
+    color: #16502e;
+    font-size: 22px;
+}
+.classificationSection .authenticRow span {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #16502e;
+}
+.classificationSection .authenticRow {
+    background: #d6ebde;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 100;
+    border-radius: 5px;
+    border: 2px solid #16502e;
+}
+
+.classificationSection .deepfakeRow .details {
+    display: flex;
+    margin-left: 15px;
+    flex-direction: column;
+    color: #af4242;
+}
+.classificationSection .uil-confused {
+    color: #af4242;
+    font-size: 22px;
+}
+.classificationSection .deepfakeRow span {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #af4242;
+}
+.classificationSection .deepfakeRow {
+    background: #fde8ec;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 100;
+    border-radius: 5px;
+    border: 2px solid #af4242;
+}
+
+.validationSection .row .content {
+    display: flex;
+    align-items: center;
+}
+.validationSection .validationRow .details {
+    display: flex;
+    margin-left: 15px;
+    flex-direction: column;
+    color: #2b51b1;
+}
+.validationSection .details .size {
+    font-size: 11px;
+    color: #404040;
+}
+.validationSection .uil-comment-exclamation {
+    color: #2b51b1;
+    font-size: 22px;
+}
+.validationSection .validationRow span {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #2b51b1;
+}
+.validationSection .validationRow {
+    background: #e9f0ff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 100;
+    border-radius: 5px;
+    border: 2px solid #2b51b1;
+}
