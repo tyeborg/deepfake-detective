@@ -9,7 +9,7 @@ from mtcnn.mtcnn import MTCNN
 
 import sys
 import os
-SCRIPT_DIR = os.path.dirname(os.path.abspath('../app/processor.py'))
+SCRIPT_DIR = os.path.dirname(os.path.abspath('../flaskapp/app/processor.py'))
 sys.path.append(os.path.dirname(SCRIPT_DIR))
 from app.processor import Processor
 

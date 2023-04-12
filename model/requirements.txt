@@ -1,4 +1,10 @@
-Run the following commands to install packages we'll use:
-• pip install -U efficientnet
-• pip install tensorflow --upgrade
-• pip install tensorflow==2.9.1
+efficientnet
+tensorflow
+tensorflow==2.9.1
+pandas
+numpy
+seaborn
+scikit-learn
+opencv-python
+mtcnn
+moviepy

@@ -88,7 +88,7 @@ class DeepfakeDetectiveModel():
         # Fit the model.
         history = model.fit(
             train_set, 
-            epochs=25,
+            epochs=2,
             validation_data=val_set, 
             callbacks = [checkpointer, reduce_lr, earlystopping],
             verbose=1

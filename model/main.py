@@ -1,7 +1,7 @@
 import os
 import math
 import glob
-import cv2 as cv
+#import cv2 as cv
 import numpy as np
 import pandas as pd
 from model import DeepfakeDetectiveModel
@@ -28,8 +28,8 @@ def get_metadatas(face_forensics_base, real_and_fake_base):
 
 def main():
     # Declare the basepaths for our datasets.
-    face_forensics_base = './datasets/face_forensics/'
-    real_and_fake_base = './datasets/real_and_fake_face_detection/'
+    #face_forensics_base = './datasets/face_forensics/'
+    #real_and_fake_base = './datasets/real_and_fake_face_detection/'
     
     # Use this code snippet to create metadata from the datasets.
     #get_metadatas(face_forensics_base, real_and_fake_base)
@@ -38,19 +38,20 @@ def main():
     preprocess = Preprocess()
 
     # Read the Face Forensics metadata.
-    face_forensics_df = get_data(face_forensics_base + 'metadata.csv')
+    #face_forensics_df = get_data(face_forensics_base + 'metadata.csv')
     # Read the Real and Fake Faces Detection metadata.
-    real_and_fake_df = get_data(real_and_fake_base + 'metadata.csv')
+    #real_and_fake_df = get_data(real_and_fake_base + 'metadata.csv')
 
     # Receive a merged and sampled meta.
-    sampled_meta = preprocess.get_sampled_meta(face_forensics_df, real_and_fake_df)
+    #sampled_meta = preprocess.get_sampled_meta(face_forensics_df, real_and_fake_df)
 
     # Export result in csv.
-    sampled_meta.to_csv('./datasets/final_metadata.csv', index=False)
+    #sampled_meta.to_csv('./datasets/final_metadata.csv', index=False)
+    sampled_meta = pd.read_csv('./datasets/face_forensics/metadata.csv')
 
     # Obtain training, testing, and validation sets from 'data_fused_meta'.
-    train_set, test_set = train_test_split(sampled_meta,test_size=0.2,random_state=42,stratify=sampled_meta['label'])
-    train_set, val_set = train_test_split(train_set,test_size=0.3,random_state=42,stratify=train_set['label'])
+    train_set, test_set = train_test_split(sampled_meta,test_size=0.15,random_state=42,stratify=sampled_meta['label'])
+    train_set, val_set = train_test_split(train_set,test_size=0.15,random_state=42,stratify=train_set['label'])
 
     # Segmentize sets between the images (x) and labels (y).
     x_train, y_train = preprocess.get_segment_sets(train_set)

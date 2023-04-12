@@ -18,15 +18,24 @@ class Processor():
         return img
 
     # Create a method that returns a given face from the image.
-    def extract_face_img(self, img, face):
+    def extract_face_img(self, img, face, input_type, count):
         # Draw a box around the discovered face.
         x, y, width, height = face
         x2, y2 = x + width, y + height 
 
         cv.rectangle(img, (x, y), (x2, y2), (0, 255, 0), 2)
+        
+        # Store the boxed face images in the respective folders (img or video).
+        if input_type == 'img':
+            cv.imwrite('app/static/files/img/frame.jpg', img)
+        elif input_type == 'video':
+            cv.imwrite('app/static/files/video/frame{:d}.jpg'.format(count), img)
+        else:
+            pass
 
         # Structure the image to the desired format.
         face_img = img[y:y2, x:x2]
+        #cv.imwrite('app/static/detected.jpg', img)
         return(face_img, img)
 
     # Create a method that rescales the image of the extracted face.
