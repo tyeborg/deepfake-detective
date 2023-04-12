@@ -133,7 +133,7 @@ def create_app():
                     results = receive_results(img)
 
         # Return the content to the webpage.
-        return render_template('official.html', proof=proof, results=results, filename=filename, val_response=val_response)
+        return render_template('detector.html', proof=proof, results=results, filename=filename, val_response=val_response)
     
     # Create the Deepfake Detective Tool (video) route.
     @app.route('/deepfake-detective', methods=['GET', 'POST'])
@@ -178,6 +178,6 @@ def create_app():
                     results = receive_results(video)
 
         # Return the content to the webpage.
-        return render_template('official.html', proof=proof, results=results, filename=filename, val_response=val_response)
+        return render_template('detector.html', proof=proof, results=results, filename=filename, val_response=val_response)
     
     return app

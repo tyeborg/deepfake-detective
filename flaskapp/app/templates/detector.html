@@ -1,0 +1,135 @@
+<!-- Detector Tool Page -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Enable access to Iconscout Icons -->
+        <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+        <!-- Reference our CSS -->
+        <link href="{{url_for('static',filename='official.css')}}" rel = "stylesheet" type="text/css">
+        <!-- Refer to custom JavaScript file link -->
+        <script src="{{url_for('static',filename='official.js')}}" async defer></script>
+        <title>Deepfake Detective</title>
+    </head>
+    <body>
+        <!-- Construct the overarching Container -->
+        <div class="bigContainer">
+            <div class="wrapper">
+
+                <!-- Section where user will input files -->
+                <div class="formContainer">
+                    <!-- Slider bars to toggle to image or video input -->
+                    <div class="slideControls">
+                        <input type="radio" name="slider" id="image" checked>
+                        <input type="radio" name="slider" id="video">
+                        <label for="image" class="slide imageToggle">Image</label>
+                        <label for="video" class="slide videoToggle">Video</label>
+                        <div class="slideTab"></div>
+                    </div>
+
+                    <!-- Content inside the user input file & response section -->
+                    <div class="formInner">
+                        <!-- Image input area -->
+                        <form action="/deepfake-detective/image-upload" method="POST" enctype="multipart/form-data" class="imgUpload" id="imgForm">
+                            <div class="imgArea" id="displayImg" data-img="">
+                                <h3>Deepfake Image Detector</h3>
+                                <input type="file" id="imgUploadBtn" name="file" class="formInput" hidden>
+                                <label for="imgUploadBtn"><i class="uil uil-image-upload"></i>Upload Image</label>
+                                <p>Supports: JPEG, JPG, PNG</p>
+                            </div>
+                            <!-- Section that will validate if the input was of a respective image extension -->
+                            <section id="imgErrorArea" class="errorArea"></section>
+                            <section id="imgUploadedArea" class="uploadedArea"></section>
+                            <!-- Button to process the image input -->
+                            <button type="submit" class="processBtn" id="imgProcessBtn" onclick="handleImgFormSubmit()" disabled>
+                                <span class="processBtnText">Process Image</span>
+                            </button>
+                        </form>
+
+                        <!-- Video input area -->
+                        <form action="/deepfake-detective/video-upload" method="POST" enctype="multipart/form-data" class="videoUpload" id="videoForm">
+                            <div class="imgArea" id="displayVideo" data-img="">
+                                <h3>Deepfake Video Detector</h3>
+                                <input type="file" id="videoUploadBtn" name="file" accept="video/*" class="formInput" hidden>
+                                <label for="videoUploadBtn"><i class="uil uil-video"></i>Upload Video</label>
+                                <p>Supports: MP4, MOV</p>
+                            </div>
+                            <!-- Section that will validate if the input was of a respective video extension -->
+                            <section id="videoErrorArea" class="errorArea"></section>
+                            <section id="videoUploadedArea" class="uploadedArea"></section>
+                            <!-- Button to process the video input -->
+                            <button type="submit" class="processBtn" id="videoProcessBtn" onclick="handleVideoFormSubmit()" disabled>
+                                <span class="processBtnText">Process Video</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content that will show the evaluation results of the given input file -->
+            <div class="resultsWrapper">
+
+                <!-- Display area of the face(s) analyzed -->
+                <div class="faceCaptureImg">
+                    {% if (proof and proof[-3:] == 'jpg') %}
+                    <img src="{{url_for('static', filename='files/img/frame.jpg')}}">
+                    {% endif %}
+                    {% if (proof and proof[-3:] == 'mp4') %}
+                    <video controls> 
+                        <source src="{{url_for('static', filename='files/video/movie.mp4')}}">
+                    </video>
+                    {% endif %}
+                    <i class="uil uil-image"></i>
+                </div>
+
+                <!-- Display area of the text evaluation results of the given input -->
+                <div class="resultsPanel">
+
+                    <!-- Display text message whether or not the given input met the crieria for an evaluation -->
+                    <section class="validationSection">
+                        {% if val_response %}
+                        <li class="row validationRow">
+                            <div class="content">
+                                <i class="uil uil-comment-exclamation"></i>
+                                <div class="details">
+                                    <span class="name">{{ val_response }}</span>
+                                </div>
+                            </div>
+                        </li>
+                        {% endif %}
+                    </section>
+
+                    <!-- Display area of the input file classification results -->
+                    <section class="classificationSection">
+                        {% if (results == 'REAL') %}
+                        <li class="row authenticRow">
+                            <div class="content">
+                                <i class="uil uil-smile-beam"></i>
+                                <div class="details">
+                                    <span class="name">{{ filename }} is authentic</span>
+                                </div>
+                            </div>
+                        </li>
+                        {% endif %}
+                        {% if (results == 'FAKE') %}
+                        <li class="row deepfakeRow">
+                            <div class="content">
+                                <i class="uil uil-confused"></i>
+                                <div class="details">
+                                    <span class="name">{{ filename }} is a deepfake</span>
+                                </div>
+                            </div>
+                        </li>
+                        {% endif %}
+                    </section>
+                </div>
+
+                <!-- Reset button that rests everything back to its default setting -->
+                <button type="button" class="resetBtn" id="resetBtn">
+                    <span class="resetBtnText">Reset</span>
+                </button>
+            </div>
+        </div>
+    </body>
+</html>
