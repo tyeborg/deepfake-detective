@@ -93,7 +93,7 @@ def create_app():
     # Create a Home route.
     @app.route('/', methods=['GET', 'POST'])
     def home():
-        return render_template('home2.html')
+        return render_template('index.html')
     
     # Create the Deepfake Detective Tool (image) route.
     @app.route('/deepfake-detective', methods=['GET', 'POST'])
@@ -115,14 +115,15 @@ def create_app():
                 # Execute DeepfakeDetective with the given videofile.
                 img = ImageInput(filepath)
                 
+                # Reduce the filename to send to HTML.
+                filename = reduce_filename(filename)
+                
                 # Determine if the image meets the evaluation criteria.
                 if img.num_faces == 0:
                     val_response = f'Error: Unable to detect a face from {filename}.'
                 elif img.num_faces > 1:
                     val_response = f'Error: Multiple faces detected from {filename}.'
                 else:
-                    # Reduce the filename to send to HTML.
-                    filename = reduce_filename(filename)
                     # State a success response if successful
                     val_response = f'Success: {filename} has met the evaluation criteria.'
                     
@@ -145,25 +146,40 @@ def create_app():
         # Execute only if a POST request was received.
         if request.method == 'POST': 
             # Obtain a filepath if the file has been validated.    
-            filename = validate_file(app, request, filename)
+            #filename = validate_file(app, request, filename)
             
             # Determine if the file was validated.
-            if filename != None:
-                # Initialize a filepath for the stored input image file.
-                filepath = app.config['UPLOAD_FOLDER'] + "/" + filename
+            #if filename != None:
+            # Grab the file from the input field.
+            f = request.files['file']
+
+            # Handle 'files' Folder in 'static' folder.
+            handle_files_folder()
+
+            # Determine if file exists and contains a valid extension.
+            if f and allowed_file(f.filename):
+                # Convert filename to a secured filename (removes slashes from filename).
+                filename = secure_filename(f.filename)
+                # Save the file object in the static/files location.
+                f.save(os.path.join(app.root_path, 'static/files', filename))
                 
-                # Reduce the filename to send to HTML.
-                filename = reduce_filename(filename)
+                # Initialize a filepath for the stored input image file.
+                #filepath = app.config['UPLOAD_FOLDER'] + "/" + filename
+                
+                filepath = app.root_path + "/" + 'static/files' + "/" + filename
 
                 # Execute DeepfakeDetective with the given video file.
                 video = VideoInput(filepath)
+                
+                # Reduce the filename to send to HTML.
+                filename = reduce_filename(filename)
                 
                 # Determine if the video meets the evaluation criteria.
                 if video.num_faces == 0:
                     val_response = f'Error: Unable to detect a face from {filename}.'
                 elif video.num_faces > 1:
                     val_response = f'Error: Multiple faces detected from {filename}.'
-                elif video.video_duration < 120:
+                elif video.video_duration > 120:
                     val_response = f'Error: {filename} happens to be too long to analyze.'
                 else:
                     # State a success response if successful
@@ -171,8 +187,6 @@ def create_app():
                 
                     # Obtain the proof image returned from the deepfake detective.
                     proof = 'app/static/files/video/movie.mp4'
-                    # Reduce the filename to send to HTML.
-                    filename = reduce_filename(filename)
                     
                     # Obtain classification results.
                     results = receive_results(video)

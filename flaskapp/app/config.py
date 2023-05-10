@@ -4,7 +4,7 @@ class Config():
     # Set our Secret Key.
     SECRET_KEY = "secretkey"
     # Configure upload folder where all the files will be uploaded into.
-    UPLOAD_FOLDER = 'static/files'
+    UPLOAD_FOLDER = 'app/static/files'
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024
 
 class ProductionConfig(Config):
