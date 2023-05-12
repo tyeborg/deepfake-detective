@@ -13,26 +13,36 @@ class DeepfakeDetective(Processor):
     def __init__(self, input_file):
         self.input_file = input_file
         # Initialize the model for further utilization.
-        self.model = tf.keras.models.load_model("app/effnet", compile=False)
+        #self.model = tf.keras.models.load_model("app/effnet", compile=False)
+        self.model = tf.saved_model.load("app/effnet")
         # Children classes will determine the value of 'num_faces'.
         self.num_faces = None
-
+    
     # Construct a method that determines if a frame is a deepfake or not.
     def analyze_individual_frame(self, frame, face, input_type, count):
+        # Get the input and output names.
+        input_name = list(self.model.signatures['serving_default'].structured_input_signature[1].keys())[0]
+        output_name = list(self.model.signatures['serving_default'].structured_outputs.keys())[0]
+        
         # Initialize face as the 'box' face parameter.
         face = face[0]['box']
         # Extract face from the frame for utilization.
         frame = super().extract_face_img(frame, face, input_type, count)[0]
 
         # Scale and resize the face frame for EfficientNetB0 model.
-        frame = super().scale_face_image(frame)
+        frame = super().pad_face_img(frame)
         # Utilize the model to make a prediciton upon the frame.
-        result = self.model.predict(frame)[0]
-        return result
-    
-    def validate(self):
-        pass
+        result = self.model.signatures[tf.saved_model.DEFAULT_SERVING_SIGNATURE_DEF_KEY](tf.constant(frame))[output_name]
         
+        return(result)
+    
+    def comprehend_prediction(self, prediction):
+        # Fake images = 0; Real images = 1.
+        if prediction <= 1 and prediction >= 0.66:
+            return('REAL')
+        else:
+            return('FAKE')
+    
     @abstractmethod
     def predict(self):
         pass
@@ -50,13 +60,14 @@ class ImageInput(DeepfakeDetective):
 
     # Construct a method that performs the prediction functionality of the image.
     def predict(self):
+        # Predict the classification of the image.
         prediction = super().analyze_individual_frame(self.img, self.face, input_type='img', count=None)
         
-        # Receive the probabilities of whether the face in the image is real or fake.
-        real, deepfake = prediction[0], prediction[1]
-        # Return the results
-        return(real, deepfake)
-            
+        # Convert the prediction into meaningful information.
+        results = prediction.numpy()[0][0]
+        results = self.comprehend_prediction(results)
+        
+        return(results)
 
 # Create a child class for DeepfakeDetective that handles an individual video.
 class VideoInput(DeepfakeDetective):
@@ -94,21 +105,32 @@ class VideoInput(DeepfakeDetective):
                 
                 # Classify the following frame as either REAL or FAKE.
                 prediction = super().analyze_individual_frame(frame, face, input_type='video', count=count)
-                # Add the probabilities into their respective lists.
-                real.append(prediction[0])
-                fake.append(prediction[1])
+
+                # Comprehend the results in a meaningful format.
+                results = prediction.numpy()[0][0]
+                results = self.comprehend_prediction(results)
+                
+                # Based on the results, add the '1' to their respective list.
+                if results == 'REAL':
+                    real.append(1)
+                else:
+                    fake.append(1)
             else:
                 unused_frames.append(frame)
                 continue
         
+        # Create a video out of the frames that were extracted.
         self.construct_proof_vid()
         
-        # Determine the probability of the video being real and fake.
-        real_probability = sum(real) / len(real)
-        fake_probability = sum(fake) / len(fake)
-
-        # Return the result.
-        return real_probability, fake_probability
+        # If 40% (or higher) of the video is classified as 'FAKE', then it'll
+        # be classified as 'FAKE'.
+        total = len(real) + len(fake)
+        forty_threshold = total * 0.4
+        
+        if len(fake) >= forty_threshold:
+            return('FAKE')
+        else:
+            return('REAL')
     
     def construct_proof_vid(self):
         # Initialize folder location that is storing all the frames.

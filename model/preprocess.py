@@ -43,39 +43,10 @@ class Preprocess(Processor):
 
         return min_len
 
-    def get_sampled_meta(self, face_forensics_df, real_and_fake_df):
-        # Split dataframes between real and fake labels.
-        real_forensics, fake_forensics = self.split_meta(face_forensics_df)
-        real_r_and_f, fake_r_and_f = self.split_meta(real_and_fake_df)
-
-        # Obtain the minimum sizes between real and fake df's of original df's. 
-        face_forensics_sample_size = self.get_min_df_size(real_forensics, fake_forensics)
-        real_and_fake_sample_size = self.get_min_df_size(real_r_and_f, fake_r_and_f)
-
-        # Receive an appropriate sample size (balanced between two datasets).
-        sample_size = 0
-        if face_forensics_sample_size < real_and_fake_sample_size:
-            sample_size = face_forensics_sample_size
-        else:
-            sample_size = real_and_fake_sample_size
-
-        # Set split dataframes to the size set within 'sample_size'.
-        real_forensics = real_forensics.sample(sample_size, random_state=42)
-        fake_forensics = fake_forensics.sample(sample_size, random_state=42)
-        real_r_and_f = real_r_and_f.sample(sample_size, random_state=42)
-        fake_r_and_f = fake_r_and_f.sample(sample_size, random_state=42)
-
-        # Respectively merge real and fake dataframes.
-        face_forensics_df = pd.concat([real_forensics, fake_forensics])
-        real_and_fake_df = pd.concat([real_r_and_f, fake_r_and_f])
-
-        # Merge the two sampled datasets together
-        data_merged_meta = pd.concat([face_forensics_df, real_and_fake_df])
-        return data_merged_meta
-
-    def get_segment_sets(self, set_name):
+    def get_segment_sets(self, set_name, name):
         # Initialize lists to store image data and label data.
         images, labels = [], []
+        count = 0
 
         for (img_path, face, label) in zip(set_name['path'], set_name["face"], set_name['label']):
             # Read the image.
@@ -83,9 +54,19 @@ class Preprocess(Processor):
 
             # Converting face string to list.
             face = ast.literal_eval(face)
+            
+            count += 1
+            
+            if name == "Train Set":
+                print(f'{name} Image {count}: Augmented')
+                # Add the formatted image into the images array.
+                formatted_img = super().train_format_img(img, face)
+            else:
+                print(f'{name} Image {count}: Non-augmented')
+                formatted_img = super().format_img(img, face)
 
             # Add the formatted image into the images array.
-            images.append(super().format_img(img, face))
+            images.append(formatted_img)
 
             # Fake images = 0; Real images = 1.
             if (label == 'FAKE'):
@@ -103,17 +84,6 @@ class Preprocess(Processor):
             label = "REAL"
 
         return label
-
-    def real_fake_fuse(self):
-        # Obtain the dataframe full of deepfakes.
-        deepfake_df = self.make_meta(self.deepfake_dir)
-        # Obtain the dataframe full of real faces.
-        real_df = self.make_meta(self.real_dir)
-
-        # Combine deepfake_df and real_df
-        merged_df = deepfake_df.append(real_df, ignore_index=True)
-
-        return merged_df
 
     def make_meta(self, path):
         # Initialize a dictionary to store info.
@@ -213,10 +183,3 @@ class FaceForensics(Preprocess):
 
             # Save frame in suggested 'frame_path'.
             cv.imwrite(frame_path, frame)
-
-class RealAndFakeFaces(Preprocess):
-    def __init__(self, basepath):
-        self.basepath = basepath
-        self.deepfake_dir = self.basepath + 'img_data/deepfake/'
-        self.real_dir = self.basepath + 'img_data/real/'
-        self.meta = self.real_fake_fuse()

@@ -12,8 +12,8 @@ from tensorflow.keras.backend import clear_session
 from tensorflow.keras.optimizers.legacy import Adam
 from tensorflow.keras.applications import efficientnet, EfficientNetB0
 from tensorflow.keras.layers import Input, RandomRotation, RandomTranslation, RandomFlip, RandomContrast
-from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint, LearningRateScheduler
 from tensorflow.keras.layers import Dense, Dropout, GlobalAveragePooling2D, Conv2D, MaxPooling2D, Flatten
+from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint, LearningRateScheduler
 
 # Setting image dimension.
 IMG_HEIGHT = 224
@@ -91,7 +91,7 @@ class DeepfakeDetectiveModel(MyModel):
         opt = Adam(learning_rate=0.00001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
         model.compile(optimizer=opt, loss="binary_crossentropy", metrics=["accuracy"])
 
-        return model
+        return(model)
         
     def train(self):
         # Receive the compiled model.
@@ -112,7 +112,6 @@ class DeepfakeDetectiveModel(MyModel):
         )
 
         # Save the model.
-        #model.save("effnet.h5")
         tf.saved_model.save(model, 'effnet')
 
         # Evaluate the model on the test data.
@@ -140,7 +139,7 @@ class CustomCNNModel(MyModel):
         tf.random.set_seed(42)
 
         # Define the input shape of the image
-        input_shape = (224, 224, 3)
+        input_shape = (IMG_HEIGHT, IMG_WIDTH, 3)
 
         # Define the Sequential model
         model = tf.keras.Sequential([
@@ -160,7 +159,7 @@ class CustomCNNModel(MyModel):
         opt = Adam()
         model.compile(loss="binary_crossentropy", optimizer=opt, metrics=["accuracy"])
 
-        return model
+        return(model)
 
     def train(self):
         # Receive the compiled model.

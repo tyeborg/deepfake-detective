@@ -10,13 +10,13 @@ from model import DeepfakeDetectiveModel
 from preprocess import Preprocess, FaceForensics
 from sklearn.model_selection import train_test_split
 
-def plot_sets(Train_set, Val_set, Test_set):
+def plot_sets(train_set, val_set, test_set):
     y = dict()
 
     y[0] = []
     y[1] = []
 
-    for set_name in (np.array(Train_set['label']), np.array(Val_set['label']), np.array(Test_set['label'])):
+    for set_name in (np.array(train_set['label']), np.array(val_set['label']), np.array(test_set['label'])):
         y[0].append(np.sum(set_name == 'REAL'))
         y[1].append(np.sum(set_name == 'FAKE'))
 
@@ -67,9 +67,6 @@ def main():
     # Create a Preprocess object.
     preprocess = Preprocess()
 
-    # Read the Face Forensics metadata.
-    #face_forensics_df = get_data(face_forensics_base + 'metadata.csv')
-
     # Export result in csv.
     #sampled_meta.to_csv('./datasets/final_metadata.csv', index=False)
     sampled_meta = pd.read_csv(face_forensics_base + 'metadata.csv')
@@ -87,10 +84,7 @@ def main():
     train_set, test_set = train_test_split(sampled_meta,test_size=0.30,random_state=42,stratify=sampled_meta['label'])
     test_set, val_set = train_test_split(test_set,test_size=0.5,random_state=42,stratify=test_set['label'])
 
-    print(f'Train set: {train_set.shape}')
-    print(f'Validation set: {val_set.shape}')
-    print(f'Test set: {test_set.shape}')
-
+    # Visualize the counts for each set.
     plot_sets(train_set, val_set, test_set)
 
     # Segmentize sets between the images (x) and labels (y).

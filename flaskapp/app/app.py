@@ -63,19 +63,6 @@ def validate_file(app, request, filename):
         f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         
     return(filename)
-
-# Create a function that determines the classification of image or video.
-def receive_results(content):
-    # Utilize the predict funtion to obtain results.
-    real, fake = content.predict()
-
-    # Initialize a variable to stringify the results to send to HTML.
-    if real > fake:
-        results = 'REAL'
-    else:
-        results = 'FAKE'
-        
-    return(results)
     
 def create_app():
     # Create an app instance.
@@ -131,7 +118,7 @@ def create_app():
                     proof = 'app/static/files/img/frame.jpg'
                     
                     # Obtain the results of either 'REAL' or 'FAKE'.
-                    results = receive_results(img)
+                    results = img.predict()
 
         # Return the content to the webpage.
         return render_template('detector.html', proof=proof, results=results, filename=filename, val_response=val_response)
@@ -189,7 +176,7 @@ def create_app():
                     proof = 'app/static/files/video/movie.mp4'
                     
                     # Obtain classification results.
-                    results = receive_results(video)
+                    results = video.predict()
 
         # Return the content to the webpage.
         return render_template('detector.html', proof=proof, results=results, filename=filename, val_response=val_response)

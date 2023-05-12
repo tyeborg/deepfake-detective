@@ -37,34 +37,74 @@ class Processor():
         face_img = img[y:y2, x:x2]
         #cv.imwrite('app/static/detected.jpg', img)
         return(face_img, img)
+    
+    def pad_face_img(self, face_img):
+        # Convert it to the right color format.
+        face_img = cv.cvtColor(face_img, cv.COLOR_BGR2RGB)
+        
+        # Resize the image based on the input dimensions: (224, 224).
+        face_img = cv.resize(face_img, (224, 224), interpolation = cv.INTER_AREA)
+        
+        # Convert the image to an array.
+        face_img = img_to_array(face_img)
+        
+        # Convert the image to a numpy array with float32 as the datatype.
+        # Normalize the image.
+        face_img = face_img.astype(np.float32) / 255.0
+        
+        # Return the frame for a Deepfake Analysis.
+        return(face_img)
 
-    # Create a method that rescales the image of the extracted face.
-    def scale_face_image(self, face_img):
+    def format_img(self, img, face):
+        # Draw a box around the discovered face.
+        x, y, width, height = face
+        x2, y2 = x + width, y + height 
+
+        cv.rectangle(img, (x, y), (x2, y2), (0, 255, 0), 2)
+
+        # Structure the image to the desired format.
+        face_img = img[y:y2, x:x2]
+        
+        # Scale and resize the image to fit the format for EfficientNetB0 model.
+        face_img = self.pad_face_img(img)
+        
+        return(face_img)
+    
+    def train_format_img(self, img, face):
+        # Define the data augmentation transformations.
+        datagen = ImageDataGenerator(
+            rotation_range=20,
+            width_shift_range=0.1,
+            height_shift_range=0.1,
+            shear_range=10,
+            zoom_range=0.1,
+            horizontal_flip=True,
+            vertical_flip=False,
+            fill_mode='nearest'
+        )
+        # Draw a box around the discovered face.
+        x, y, width, height = face
+        x2, y2 = x + width, y + height 
+
+        cv.rectangle(img, (x, y), (x2, y2), (0, 255, 0), 2)
+
+        # Structure the image to the desired format.
+        face_img = img[y:y2, x:x2]
+        
         # Convert it to the right color format.
         face_img = cv.cvtColor(face_img, cv.COLOR_BGR2RGB)
         
         # Resize the image based on the input dimensions: (224, 224).
         face_img = cv.resize(face_img, (IMG_HEIGHT, IMG_WIDTH), interpolation = cv.INTER_AREA)
 
-        # Convert the image to a numpy array with float32 as the datatype.
-        face_img = np.array(face_img)
-        face_img = face_img.astype('float32')
+        # Apply data augmentation transformations.
+        face_img = face_img.reshape((1,) + face_img.shape)  # Add batch dimension.
+        face_img = next(datagen.flow(face_img))[0]  # Apply random transformation.
 
-        # Normalize the image.
-        face_img /= 255
-
-        # Adding image to 4D.
-        face_img = np.expand_dims(face_img, 0)
-
-        # Return the frame for a Deepfake Analysis.
+        # Convert the image to an array.
+        face_img = img_to_array(face_img)
+        
         return face_img
-
-    def format_img(self, img, face):
-        # Extract the face within the given image.
-        img = self.extract_face_img(img, face)
-        # Scale and resize the image to fit the format for EfficientNetB0 model.
-        img = self.scale_face_image(img)
-        return img
 
     def find_face(self, frame):
         # Use a consistent face recongition detector across all datasets.
