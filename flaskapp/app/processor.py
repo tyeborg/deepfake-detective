@@ -2,7 +2,7 @@ import cv2 as cv
 import numpy as np
 from mtcnn.mtcnn import MTCNN
 from moviepy.editor import VideoFileClip
-from tensorflow.keras.preprocessing.image import img_to_array
+from tensorflow.keras.preprocessing.image import img_to_array, ImageDataGenerator
 
 # Setting image dimension.
 IMG_WIDTH = 224
