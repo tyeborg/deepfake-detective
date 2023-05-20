@@ -17,6 +17,8 @@ docker-compose up --build
 ```
 5). Visit Deepfake Detective app at: `http://localhost:3000`
 
+<img width="1440" alt="Screen Shot 2023-04-13 at 12 57 59 AM" src="https://github.com/tyeborg/deepfake-detective/assets/96035297/d2187062-9ef7-4ca0-a3f7-4052fbbcba2a">
+
 ## Deepfake Detective Screencast
 https://github.com/tyeborg/deepfake-detective/assets/96035297/41174918-d8ed-455c-9d99-49ad106b84e4
 
