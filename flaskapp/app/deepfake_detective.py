@@ -13,7 +13,6 @@ class DeepfakeDetective(Processor):
     def __init__(self, input_file):
         self.input_file = input_file
         # Initialize the model for further utilization.
-        #self.model = tf.keras.models.load_model("app/effnet", compile=False)
         self.model = tf.saved_model.load("app/effnet")
         # Children classes will determine the value of 'num_faces'.
         self.num_faces = None

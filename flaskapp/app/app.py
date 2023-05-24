@@ -165,7 +165,7 @@ def create_app():
                 if video.num_faces == 0:
                     val_response = f'Error: Unable to detect a face from {filename}.'
                 elif video.num_faces > 1:
-                    val_response = f'Error: Multiple faces detected from {filename}.'
+                    val_response = f'Error: {video.num_faces} faces detected from {filename}.'
                 elif video.video_duration > 120:
                     val_response = f'Error: {filename} happens to be too long to analyze.'
                 else:
