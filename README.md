@@ -1,6 +1,6 @@
 # Deepfake Detective Web App
 
-Project Outline: Deepfakes have become an increasing concern. Particularly with regards to their potential for promoting fake news, damaging reputations and broader societal impacts. This project will focus on an investigation, implementation and analysis of deepfake technology.
+Deepfakes have raised significant concerns due to their ability to propagate fake news, harm reputations, and have broad societal implications. This project will revolve around conducting a comprehensive investigation, implementing, and analyzing deepfake technology, with a particular focus on developing effective detection methods.
 
 ## Installation
 1). Clone this repository by `git clone https://github.com/tyeborg/deepfake-detective.git`.
